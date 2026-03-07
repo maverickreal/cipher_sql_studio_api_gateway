@@ -1,0 +1,4 @@
+misc
+node_modules
+.env
+cipher_sql_studio.code-workspace
