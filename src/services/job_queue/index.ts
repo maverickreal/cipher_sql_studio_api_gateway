@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
 import { envVars } from "../../config";
-import {type ServiceClient} from "../../types";
+import { type ServiceClient } from "../../types";
 import { JOB_TTL_S } from "../../utils/constants";
 
 
@@ -18,7 +18,7 @@ interface JobStatusResponse {
 };
 
 class TaskQueueClient {
-  private static taskQueue: Queue | null = null;
+  private static clientInst: Queue | null = null;
   private static connectionURI: string | null = null;
 
   static connect(uri: string) {
@@ -32,14 +32,14 @@ class TaskQueueClient {
       return;
     }
 
-    TaskQueueClient.taskQueue = new Queue(uri, {
+    TaskQueueClient.clientInst = new Queue(uri, {
       connection: { url: envVars.REDIS_URL },
     });
     TaskQueueClient.connectionURI = uri;
   }
 
   static async enqueue(data: SqlJobPayload) {
-    const { id } = await TaskQueueClient.taskQueue!.add(
+    const { id } = await TaskQueueClient.clientInst!.add(
       "client-sql-code-run",
       data,
       {
@@ -52,7 +52,7 @@ class TaskQueueClient {
   }
 
   static async getStatus(taskId: string) {
-    const task = await TaskQueueClient.taskQueue!.getJob(taskId);
+    const task = await TaskQueueClient.clientInst!.getJob(taskId);
 
     if (!task) {
       return null;
@@ -74,9 +74,9 @@ class TaskQueueClient {
   }
 
   static async disconnect(): Promise<void> {
-    if (TaskQueueClient.taskQueue) {
-      await TaskQueueClient.taskQueue.close();
-      TaskQueueClient.taskQueue = null;
+    if (TaskQueueClient.clientInst) {
+      await TaskQueueClient.clientInst.close();
+      TaskQueueClient.clientInst = null;
       TaskQueueClient.connectionURI = null;
     }
   }
