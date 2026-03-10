@@ -1,0 +1,24 @@
+import dotenv from "dotenv";
+import { z } from "zod/v4";
+import { SERVER_START_FAILURE_EXIT_CODE } from "../../utils/constants";
+
+dotenv.config();
+
+const envVarsSchema = z.object({
+  CLIENT_URL: z.url().nonempty().nonoptional(),
+  SERVER_PORT: z.coerce.number().int().nonoptional(),
+  MONGO_URI: z.url().nonempty().nonoptional(),
+  REDIS_URL: z.url().nonempty().nonoptional(),
+});
+
+const parsedEnvVarsBody = envVarsSchema.safeParse(process.env);
+
+if (!parsedEnvVarsBody.success) {
+  console.error(
+    "Invalid environment variables!",
+    z.prettifyError(parsedEnvVarsBody.error),
+  );
+  process.exit(SERVER_START_FAILURE_EXIT_CODE);
+}
+
+export default parsedEnvVarsBody.data;
