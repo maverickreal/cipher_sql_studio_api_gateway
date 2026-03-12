@@ -9,6 +9,9 @@ const envVarsSchema = z.object({
   SERVER_PORT: z.coerce.number().int().nonoptional(),
   MONGO_URI: z.url().nonempty().nonoptional(),
   REDIS_URL: z.url().nonempty().nonoptional(),
+  LOG_LEVEL: z
+    .enum(["trace", "debug", "info", "warn", "error", "fatal"])
+    .nonoptional(),
 });
 
 const parsedEnvVarsBody = envVarsSchema.safeParse(process.env);

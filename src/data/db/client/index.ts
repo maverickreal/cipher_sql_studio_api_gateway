@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import {type ServiceClient} from "../../../types";
+import { type ServiceClient } from "../../../types";
+import { logger } from "../../../config";
 
 class DBClient {
   private static clientInst: mongoose.Mongoose | null = null;
@@ -15,15 +16,15 @@ class DBClient {
     }
 
     mongoose.connection.on("connected", () => {
-      console.log("Established MongoDB connection.");
+      logger.info("Established MongoDB connection.");
     });
 
     mongoose.connection.on("error", (err: Error) => {
-      console.error("Error in MongoDB connection!", err.message);
+      logger.error({ err }, "Error in MongoDB connection!");
     });
 
     mongoose.connection.on("disconnected", () => {
-      console.log("Terminated MongoDB connection.");
+      logger.info("Terminated MongoDB connection.");
     });
     DBClient.clientInst = await mongoose.connect(uri);
     DBClient.connectionURI = uri;

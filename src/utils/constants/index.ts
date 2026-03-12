@@ -12,7 +12,6 @@ export enum ASSIGNMENT_DIFFICULTY {
 }
 
 export const MAX_USER_SQL_CODE_LEN = 5000;
-export const BULL_QUEUE_NAME = "cipher_sql_studio_queue";
 export const JOB_TTL_S = 600;
 
 export const KILL_SIGNALS_TO_INTERCEPT = [
@@ -32,3 +31,4 @@ export const enum ENV_MODE {
 
 export const ASSIGNMENT_KEY_PREFIX = "client_sql_code_assignment:";
 export const ASSIGNMENT_LIST_KEY = "client_sql_code_assignment:all";
+export const BULL_QUEUE_NAME = "cipher_sql_studio_queue";

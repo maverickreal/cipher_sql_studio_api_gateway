@@ -1,5 +1,6 @@
 import { createClient, RedisClientType } from "redis";
-import {type ServiceClient} from "../../types";
+import { type ServiceClient } from "../../types";
+import { logger } from "../../config";
 
 class CacheClient {
   private static clientInst: RedisClientType | null = null;
@@ -17,15 +18,15 @@ class CacheClient {
     const cacheObj: RedisClientType = createClient({ url: uri });
 
     cacheObj.on("error", (err: Error) => {
-      console.error("Error in Redis connection!", err.message);
+      logger.error({ err }, "Error in Redis connection!");
     });
 
     cacheObj.on("end", () => {
-      console.log("Terminated Redis connection.");
+      logger.info("Terminated Redis connection.");
     });
 
     cacheObj.on("ready", () => {
-      console.log("Established Redis connection.");
+      logger.info("Established Redis connection.");
     });
 
     await cacheObj.connect();
@@ -45,7 +46,7 @@ class CacheClient {
 
   static get() {
     if (!CacheClient.clientInst) {
-      throw new Error("Null cache client instance seeked!")
+      throw new Error("Null cache client instance seeked!");
     }
 
     return CacheClient.clientInst;

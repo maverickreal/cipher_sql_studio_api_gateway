@@ -1,4 +1,4 @@
 export interface ServiceClient {
-  connect(uri: string): Promise<unknown> | void;
+  connect(uri: string, cache_name?: string): Promise<unknown> | void;
   disconnect(): Promise<void>;
 };

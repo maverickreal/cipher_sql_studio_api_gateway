@@ -1,8 +1,7 @@
 import { Queue } from "bullmq";
-import { envVars } from "../../config";
 import { type ServiceClient } from "../../types";
 import { JOB_TTL_S } from "../../utils/constants";
-
+import { logger, envVars } from "../../config";
 
 interface SqlJobPayload {
   assignmentId: string;
@@ -10,32 +9,30 @@ interface SqlJobPayload {
   assignmentSchema: string;
   mode: "read" | "write";
   writeTables?: Array<string>;
-};
+}
 
 interface JobStatusResponse {
   status: string;
   result?: unknown;
-};
+}
 
 class TaskQueueClient {
   private static clientInst: Queue | null = null;
-  private static connectionURI: string | null = null;
+  private static queueName: string | null = null;
 
-  static connect(uri: string) {
-    if (TaskQueueClient.connectionURI !== null) {
-      if (TaskQueueClient.connectionURI !== uri) {
-        throw new Error(
-          "Cannot connect to a different Redis URI after already connected",
-        );
+  static connect(name: string) {
+    if (TaskQueueClient.queueName !== null) {
+      if (TaskQueueClient.queueName !== name) {
+        throw new Error("Connection to a different BullMQ queue seeked.");
       }
 
       return;
     }
 
-    TaskQueueClient.clientInst = new Queue(uri, {
+    TaskQueueClient.clientInst = new Queue(name, {
       connection: { url: envVars.REDIS_URL },
     });
-    TaskQueueClient.connectionURI = uri;
+    TaskQueueClient.queueName = name;
   }
 
   static async enqueue(data: SqlJobPayload) {
@@ -63,10 +60,9 @@ class TaskQueueClient {
     if (taskState === "completed" && task.returnvalue) {
       respBodyData.result = task.returnvalue;
     } else if (taskState === "failed") {
-      console.error(
-        `BullMQ task with ID ${taskId} and
-        name ${task.name} failed!\nFailure cause:
-        ${task.failedReason}`,
+      logger.error(
+        { taskId, taskName: task.name, failedReason: task.failedReason },
+        "BullMQ task failed",
       );
     }
 
@@ -77,7 +73,7 @@ class TaskQueueClient {
     if (TaskQueueClient.clientInst) {
       await TaskQueueClient.clientInst.close();
       TaskQueueClient.clientInst = null;
-      TaskQueueClient.connectionURI = null;
+      TaskQueueClient.queueName = null;
     }
   }
 }
