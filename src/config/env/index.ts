@@ -1,8 +1,5 @@
-import dotenv from "dotenv";
 import { z } from "zod/v4";
 import { SERVER_START_FAILURE_EXIT_CODE } from "../../utils/constants";
-
-dotenv.config();
 
 const envVarsSchema = z.object({
   CLIENT_URL: z.url().nonempty().nonoptional(),

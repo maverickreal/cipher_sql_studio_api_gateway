@@ -1,6 +1,10 @@
 import { Queue } from "bullmq";
 import { type ServiceClient } from "../../types";
-import { JOB_TTL_S } from "../../utils/constants";
+import {
+  JOB_TTL_S,
+  BLLMQ_JOB_NAME,
+  BULLMQ_JOB_FAILURE_MESSAGE,
+} from "../../utils/constants";
 import { logger, envVars } from "../../config";
 
 interface SqlJobPayload {
@@ -30,20 +34,21 @@ class TaskQueueClient {
     }
 
     TaskQueueClient.clientInst = new Queue(name, {
-      connection: { url: envVars.REDIS_URL },
+      connection: {
+        url: envVars.REDIS_URL,
+        maxRetriesPerRequest: null,
+        enableReadyCheck: false,
+        lazyConnect: false,
+      },
     });
     TaskQueueClient.queueName = name;
   }
 
   static async enqueue(data: SqlJobPayload) {
-    const { id } = await TaskQueueClient.clientInst!.add(
-      "client-sql-code-run",
-      data,
-      {
-        removeOnComplete: { age: JOB_TTL_S },
-        removeOnFail: { age: JOB_TTL_S },
-      },
-    );
+    const { id } = await TaskQueueClient.clientInst!.add(BLLMQ_JOB_NAME, data, {
+      removeOnComplete: { age: JOB_TTL_S },
+      removeOnFail: { age: JOB_TTL_S },
+    });
 
     return id;
   }
@@ -62,8 +67,9 @@ class TaskQueueClient {
     } else if (taskState === "failed") {
       logger.error(
         { taskId, taskName: task.name, failedReason: task.failedReason },
-        "BullMQ task failed",
+        BULLMQ_JOB_FAILURE_MESSAGE,
       );
+      respBodyData.result = BULLMQ_JOB_FAILURE_MESSAGE;
     }
 
     return respBodyData;

@@ -4,7 +4,7 @@ import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils/constants"
 import express from "express";
 import cors from "cors";
 import apiV1Router from "./routes/api/v1";
-import { errorHandler, requestLogger } from "./middleware";
+import { errorHandler, requestLogger, GlobalRateLimitMware } from "./middleware";
 
 
 const app = express();
@@ -22,6 +22,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.use(GlobalRateLimitMware);
 
 app.use(express.json({ limit: EXPRESS_REQ_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: EXPRESS_REQ_BODY_LIMIT }));
