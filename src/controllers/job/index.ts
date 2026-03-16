@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import {TaskQueueClient} from "../../services";
-
+import { TaskQueueClient } from "../../services";
 
 const get_job_status = async (req: Request, res: Response) => {
   const jobStatus = await TaskQueueClient.getStatus(`${req.params.taskId}`);

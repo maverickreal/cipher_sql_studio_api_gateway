@@ -1,7 +1,6 @@
 import { Schema, InferSchemaType, Model, model } from "mongoose";
 import { ASSIGNMENT_DIFFICULTY } from "../../../../utils/constants";
 
-
 const AssignmentSchema = new Schema(
   {
     title: { type: String, required: true, minLength: 1 },

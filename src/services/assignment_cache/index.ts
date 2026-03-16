@@ -3,12 +3,11 @@ import { Assignment } from "../../data";
 import {
   ASSIGNMENT_CACHE_TTL_S,
   ASSIGNMENT_KEY_PREFIX,
-  ASSIGNMENT_LIST_KEY
+  ASSIGNMENT_LIST_KEY,
 } from "../../utils/constants";
 
-
 const getAssignmentByIdCached = async (id: string) => {
-  const cacheClient = CacheClient.get();
+  const cacheClient = (await CacheClient.get())!;
   const cachedAssignment = await cacheClient.get(ASSIGNMENT_KEY_PREFIX + id);
 
   if (cachedAssignment) {
@@ -29,7 +28,7 @@ const getAssignmentByIdCached = async (id: string) => {
 };
 
 const getAllAssignmentsCached = async () => {
-  const cacheClient = CacheClient.get();
+  const cacheClient = (await CacheClient.get())!;
   const cachedAssignments = await cacheClient.get(ASSIGNMENT_LIST_KEY);
 
   if (cachedAssignments) {
@@ -45,15 +44,5 @@ const getAllAssignmentsCached = async () => {
 
   return assignmentsDB;
 };
-
-/*
-const invalidateAllAssignmentsCache = async () => {
-  await CacheClient.get().del(ASSIGNMENT_LIST_KEY);
-};
-
-const invalidateAssignmentCacheById = async (id: string) => {
-  await CacheClient.get().del(id);
-};
-*/
 
 export { getAssignmentByIdCached, getAllAssignmentsCached };

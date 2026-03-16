@@ -1,23 +1,16 @@
 import app from "./app";
-import { envVars, establishConnections, logger } from "./config";
+import { envVars, logger } from "./config";
 import { DBClient, CacheClient } from "./data";
 import { TaskQueueClient } from "./services";
 import {
   SERVER_START_FAILURE_EXIT_CODE,
   KILL_SIGNALS_TO_INTERCEPT,
   SERVER_KILL_SIGNAL_EXIT_CODE,
-  BULL_QUEUE_NAME,
 } from "./utils/constants";
 
 app
-  .listen(envVars.SERVER_PORT, () => {
+  .listen(envVars.SERVER_PORT, async () => {
     logger.info("Started the server.");
-
-    establishConnections({
-      cacheURI: envVars.REDIS_URL,
-      dbURI: envVars.MONGO_URI,
-      queueURI: BULL_QUEUE_NAME,
-    });
 
     KILL_SIGNALS_TO_INTERCEPT.forEach((eventTag) => {
       process.on(eventTag, async () => {
@@ -30,6 +23,10 @@ app
         process.exit(SERVER_KILL_SIGNAL_EXIT_CODE);
       });
     });
+
+    await CacheClient.connect();
+    await DBClient.connect();
+    TaskQueueClient.connect();
   })
   .on("error", (err: Error) => {
     logger.error({ err }, "Error starting the server!");

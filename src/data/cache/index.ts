@@ -1,21 +1,16 @@
 import { createClient, RedisClientType } from "redis";
 import { type ServiceClient } from "../../types";
-import { logger } from "../../config";
+import { logger, envVars } from "../../config";
 
 class CacheClient {
   private static clientInst: RedisClientType | null = null;
-  private static connectionURI: string | null = null;
 
-  static async connect(uri: string): Promise<RedisClientType> {
+  static async connect() {
     if (CacheClient.clientInst !== null) {
-      if (CacheClient.connectionURI !== uri) {
-        throw new Error("Another Redis connection client seeked!");
-      }
-
-      return CacheClient.clientInst;
+      return;
     }
 
-    const cacheObj: RedisClientType = createClient({ url: uri });
+    const cacheObj: RedisClientType = createClient({ url: envVars.REDIS_URL });
 
     cacheObj.on("error", (err: Error) => {
       logger.error({ err }, "Error in Redis connection!");
@@ -31,22 +26,18 @@ class CacheClient {
 
     await cacheObj.connect();
     CacheClient.clientInst = cacheObj;
-    CacheClient.connectionURI = uri;
-
-    return CacheClient.clientInst;
   }
 
   static async disconnect() {
     if (CacheClient.clientInst) {
       await CacheClient.clientInst.quit();
       CacheClient.clientInst = null;
-      CacheClient.connectionURI = null;
     }
   }
 
-  static get() {
+  static async get() {
     if (!CacheClient.clientInst) {
-      throw new Error("Null cache client instance seeked!");
+      await CacheClient.connect();
     }
 
     return CacheClient.clientInst;

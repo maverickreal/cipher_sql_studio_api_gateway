@@ -22,18 +22,13 @@ interface JobStatusResponse {
 
 class TaskQueueClient {
   private static clientInst: Queue | null = null;
-  private static queueName: string | null = null;
 
-  static connect(name: string) {
-    if (TaskQueueClient.queueName !== null) {
-      if (TaskQueueClient.queueName !== name) {
-        throw new Error("Connection to a different BullMQ queue seeked.");
-      }
-
+  static connect() {
+    if (TaskQueueClient.clientInst !== null) {
       return;
     }
 
-    TaskQueueClient.clientInst = new Queue(name, {
+    TaskQueueClient.clientInst = new Queue(envVars.BULLMQ_SQL_QUEUE_NAME, {
       connection: {
         url: envVars.REDIS_URL,
         maxRetriesPerRequest: null,
@@ -41,7 +36,6 @@ class TaskQueueClient {
         lazyConnect: false,
       },
     });
-    TaskQueueClient.queueName = name;
   }
 
   static async enqueue(data: SqlJobPayload) {
@@ -79,7 +73,6 @@ class TaskQueueClient {
     if (TaskQueueClient.clientInst) {
       await TaskQueueClient.clientInst.close();
       TaskQueueClient.clientInst = null;
-      TaskQueueClient.queueName = null;
     }
   }
 }

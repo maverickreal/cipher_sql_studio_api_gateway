@@ -1,7 +1,9 @@
 import { Types } from "mongoose";
-import { getAssignmentByIdCached, getAllAssignmentsCached } from "../../services";
+import {
+  getAssignmentByIdCached,
+  getAllAssignmentsCached,
+} from "../../services";
 import { Request, Response } from "express";
-
 
 const retrieve_all_assignments = async (_req: Request, res: Response) => {
   const assignments = await getAllAssignmentsCached();

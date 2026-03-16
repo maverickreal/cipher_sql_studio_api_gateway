@@ -1,11 +1,13 @@
 import helmet from "helmet";
 import { envVars } from "./config";
-import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils/constants";
+import {
+  CORS_ALLOWED_METHODS,
+  EXPRESS_REQ_BODY_LIMIT,
+} from "./utils/constants";
 import express from "express";
 import cors from "cors";
 import apiV1Router from "./routes/api/v1";
-import { errorHandler, requestLogger, GlobalRateLimitMware } from "./middleware";
-
+import { errorHandler, apiLogger, GlobalRateLimitMware } from "./middleware/";
 
 const app = express();
 
@@ -28,7 +30,7 @@ app.use(GlobalRateLimitMware);
 app.use(express.json({ limit: EXPRESS_REQ_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: EXPRESS_REQ_BODY_LIMIT }));
 
-app.use(requestLogger);
+app.use(apiLogger);
 
 app.use("/api/v1", apiV1Router);
 

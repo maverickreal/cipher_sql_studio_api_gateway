@@ -4,12 +4,10 @@ import { MAX_USER_SQL_CODE_LEN } from "../../utils/constants";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 
-
 const SqlJobPayloadSchema = z.object({
-  assignmentId: z.string().refine(
-    id => Types.ObjectId.isValid(`${id}`),
-    { message: "Invalid assignment ID provided!" }
-  ),
+  assignmentId: z.string().refine((id) => Types.ObjectId.isValid(`${id}`), {
+    message: "Invalid assignment ID provided!",
+  }),
   userSql: z
     .string()
     .max(MAX_USER_SQL_CODE_LEN)
