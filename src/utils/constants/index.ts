@@ -38,5 +38,7 @@ export const RATE_LIMIT_ERROR = "API endpoint rate limit reached!";
 
 export const ASSIGNMENT_KEY_PREFIX = "client_sql_code_assignment:";
 export const ASSIGNMENT_LIST_KEY = "client_sql_code_assignment:all";
-export const BLLMQ_JOB_NAME = "client-sql-code-run";
+export const BLLMQ_JOB_NAME = "client_sql_studio_sql_exec";
+export const ADMIN_ASSIGNMENT_SEED_JOB_NAME =
+  "client_sql_studio_admin_assignment_seed";
 export const BULLMQ_JOB_FAILURE_MESSAGE = "BullMQ task failed!";

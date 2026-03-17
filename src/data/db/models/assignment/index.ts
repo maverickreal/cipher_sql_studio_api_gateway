@@ -1,5 +1,6 @@
 import { Schema, InferSchemaType, Model, model } from "mongoose";
 import { ASSIGNMENT_DIFFICULTY } from "../../../../utils/constants";
+import z from "zod/v4";
 
 const AssignmentSchema = new Schema(
   {
@@ -11,6 +12,14 @@ const AssignmentSchema = new Schema(
   },
   { timestamps: true },
 );
+
+const AssignmentValidatorSchema = {
+  title: z.string().nonempty().nonoptional(),
+  description: z.string().nonempty().nonoptional(),
+  difficulty: z.enum(ASSIGNMENT_DIFFICULTY).nonoptional(),
+  sampleTable: z.string().nonempty().nonoptional(),
+  sampleOutput: z.string().nonempty().nonoptional(),
+};
 
 type IAssignment = InferSchemaType<typeof AssignmentSchema>;
 
@@ -25,4 +34,4 @@ const Assignment = model<IAssignment, AssignmentModel>(
   AssignmentSchema,
 );
 
-export { Assignment, IAssignment };
+export { Assignment, IAssignment, AssignmentValidatorSchema };

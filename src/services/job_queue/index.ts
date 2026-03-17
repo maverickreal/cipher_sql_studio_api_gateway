@@ -3,9 +3,11 @@ import { type ServiceClient } from "../../types";
 import {
   JOB_TTL_S,
   BLLMQ_JOB_NAME,
+  ADMIN_ASSIGNMENT_SEED_JOB_NAME,
   BULLMQ_JOB_FAILURE_MESSAGE,
 } from "../../utils/constants";
 import { logger, envVars } from "../../config";
+import { Types } from "mongoose";
 
 interface SqlJobPayload {
   assignmentId: string;
@@ -13,6 +15,11 @@ interface SqlJobPayload {
   assignmentSchema: string;
   mode: "read" | "write";
   writeTables?: Array<string>;
+}
+
+export interface AdminAssignmentSeedJobPayload {
+  assignmentId: Types.ObjectId;
+  initSql: string;
 }
 
 interface JobStatusResponse {
@@ -43,6 +50,21 @@ class TaskQueueClient {
       removeOnComplete: { age: JOB_TTL_S },
       removeOnFail: { age: JOB_TTL_S },
     });
+
+    return id;
+  }
+
+  static async enqueueAdminAssignmentSeedJob(
+    data: AdminAssignmentSeedJobPayload,
+  ) {
+    const { id } = await TaskQueueClient.clientInst!.add(
+      ADMIN_ASSIGNMENT_SEED_JOB_NAME,
+      data,
+      {
+        removeOnComplete: { age: JOB_TTL_S },
+        removeOnFail: { age: JOB_TTL_S },
+      },
+    );
 
     return id;
   }
