@@ -11,6 +11,7 @@ const AssignmentSolutionSchema = new Schema(
     },
     solutionSql: { type: String, required: false, minLength: 1 },
     validationSql: { type: String, required: false, minLength: 1 },
+    orderMatters: { type: Boolean, required: true },
   },
   { timestamps: true },
 );
@@ -18,6 +19,7 @@ const AssignmentSolutionSchema = new Schema(
 const AssignmentSolutionValidatorSchema = {
   solutionSql: z.string().nonempty().optional(),
   validationSql: z.string().nonempty().optional(),
+  orderMatters: z.boolean().nonoptional(),
 };
 
 type IAssignmentSolution = InferSchemaType<typeof AssignmentSolutionSchema>;

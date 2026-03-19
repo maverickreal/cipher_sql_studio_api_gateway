@@ -17,6 +17,7 @@ interface SqlJobPayload {
   writeTables?: Array<string>;
   solutionSql?: string;
   validationSql?: string;
+  orderMatters?: boolean;
 }
 
 export interface AdminAssignmentSeedJobPayload {

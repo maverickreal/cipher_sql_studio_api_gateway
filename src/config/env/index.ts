@@ -1,5 +1,6 @@
 import { z } from "zod/v4";
 import { SERVER_START_FAILURE_EXIT_CODE } from "../../utils";
+import logger from "../log";
 
 const envVarsSchema = z.object({
   CLIENT_URL: z.url().nonempty().nonoptional(),
@@ -10,14 +11,16 @@ const envVarsSchema = z.object({
   LOG_LEVEL: z
     .enum(["trace", "debug", "info", "warn", "error", "fatal"])
     .nonoptional(),
+  ENV_MODE: z.enum(["dev", "staging", "prod"]).default("dev"),
+  LOG_DIR: z.string().default("./logs"),
 });
 
 const parsedEnvVarsBody = envVarsSchema.safeParse(process.env);
 
 if (!parsedEnvVarsBody.success) {
-  console.error(
+  logger.error(
+    { trace: z.prettifyError(parsedEnvVarsBody.error) },
     "Invalid environment variables!",
-    z.prettifyError(parsedEnvVarsBody.error),
   );
   process.exit(SERVER_START_FAILURE_EXIT_CODE);
 }

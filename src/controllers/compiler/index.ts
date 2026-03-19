@@ -52,6 +52,7 @@ const run_client_sql_code = async (req: Request, res: Response) => {
     writeTables: bodyData.writeTables,
     solutionSql: solution?.solutionSql || undefined,
     validationSql: solution?.validationSql || undefined,
+    orderMatters: solution?.orderMatters,
   });
 
   res.status(202).json({ taskId });
