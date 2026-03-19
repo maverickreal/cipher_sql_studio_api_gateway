@@ -6,7 +6,7 @@ import {
   SERVER_START_FAILURE_EXIT_CODE,
   KILL_SIGNALS_TO_INTERCEPT,
   SERVER_KILL_SIGNAL_EXIT_CODE,
-} from "./utils/constants";
+} from "./utils";
 
 app
   .listen(envVars.SERVER_PORT, async () => {

@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-import { SERVER_START_FAILURE_EXIT_CODE } from "../../utils/constants";
+import { SERVER_START_FAILURE_EXIT_CODE } from "../../utils";
 
 const envVarsSchema = z.object({
   CLIENT_URL: z.url().nonempty().nonoptional(),

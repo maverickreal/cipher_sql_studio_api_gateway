@@ -1,9 +1,6 @@
 import helmet from "helmet";
 import { envVars } from "./config";
-import {
-  CORS_ALLOWED_METHODS,
-  EXPRESS_REQ_BODY_LIMIT,
-} from "./utils/constants";
+import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils";
 import express from "express";
 import cors from "cors";
 import apiV1Router from "./routes/api/v1";

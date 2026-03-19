@@ -1,10 +1,11 @@
 import { CacheClient } from "../../data";
-import { Assignment } from "../../data";
+import { Assignment, AssignmentSolution } from "../../data";
 import {
   ASSIGNMENT_CACHE_TTL_S,
   ASSIGNMENT_KEY_PREFIX,
   ASSIGNMENT_LIST_KEY,
-} from "../../utils/constants";
+  ASSIGNMENT_SOLUTION_KEY_PREFIX,
+} from "../../utils";
 
 const getAssignmentByIdCached = async (id: string) => {
   const cacheClient = (await CacheClient.get())!;
@@ -45,4 +46,35 @@ const getAllAssignmentsCached = async () => {
   return assignmentsDB;
 };
 
-export { getAssignmentByIdCached, getAllAssignmentsCached };
+const getAssignmentSolutionByAssignmentIdCached = async (
+  assignmentId: string,
+) => {
+  const cacheClient = (await CacheClient.get())!;
+  const cachedSolution = await cacheClient.get(
+    ASSIGNMENT_SOLUTION_KEY_PREFIX + assignmentId,
+  );
+
+  if (cachedSolution) {
+    return JSON.parse(cachedSolution);
+  }
+
+  const solutionDB = await AssignmentSolution.findOne({
+    assignmentId,
+  }).lean();
+
+  if (solutionDB) {
+    await cacheClient.setEx(
+      ASSIGNMENT_SOLUTION_KEY_PREFIX + assignmentId,
+      ASSIGNMENT_CACHE_TTL_S,
+      JSON.stringify(solutionDB),
+    );
+  }
+
+  return solutionDB;
+};
+
+export {
+  getAssignmentByIdCached,
+  getAllAssignmentsCached,
+  getAssignmentSolutionByAssignmentIdCached,
+};

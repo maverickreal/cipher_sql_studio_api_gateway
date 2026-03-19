@@ -8,7 +8,7 @@ import {
   EXECUTE_RATE_LIMIT_WINDOW_SIZE,
   EXECUTE_RATE_LIMIT_PER_WINDOW,
   RATE_LIMIT_ERROR,
-} from "../../utils/constants";
+} from "../../utils";
 
 const getRateLimitMware = (
   scope: string,

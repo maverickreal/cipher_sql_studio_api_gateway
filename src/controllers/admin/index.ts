@@ -4,20 +4,37 @@ import {
   Assignment,
   AssignmentValidatorSchema,
 } from "../../data/db/models/assignment";
+import {
+  AssignmentSolution,
+  AssignmentSolutionValidatorSchema,
+} from "../../data/db/models/assignment_solution";
 import TaskQueueClient from "../../services/job_queue";
 import { logger } from "../../config";
 
 const adminAssignmentSchema = z.object({
   ...AssignmentValidatorSchema,
+  ...AssignmentSolutionValidatorSchema,
   initSql: z.string().nonempty().nonoptional(),
 });
 
 const create_assignment = async (req: Request, res: Response) => {
-  const parsedBodyData = adminAssignmentSchema.parse(req.body);
+  const parsedBodyData = adminAssignmentSchema.safeParse(req.body);
 
-  const { initSql, ...assignmentObj } = parsedBodyData;
+  if (!parsedBodyData.success) {
+    res.status(400).json({ error: parsedBodyData.error.message });
+    return;
+  }
+
+  const { initSql, solutionSql, validationSql, ...assignmentObj } =
+    parsedBodyData.data;
 
   const freshAssignment = await Assignment.create(assignmentObj);
+
+  await AssignmentSolution.create({
+    assignmentId: freshAssignment._id,
+    solutionSql,
+    validationSql,
+  });
 
   logger.info(
     { assignmentId: freshAssignment._id },

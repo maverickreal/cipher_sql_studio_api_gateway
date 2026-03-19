@@ -1,8 +1,13 @@
 import { z } from "zod/v4";
-import { getAssignmentByIdCached, TaskQueueClient } from "../../services";
-import { MAX_USER_SQL_CODE_LEN } from "../../utils/constants";
+import {
+  getAssignmentByIdCached,
+  getAssignmentSolutionByAssignmentIdCached,
+  TaskQueueClient,
+} from "../../services";
+import { MAX_USER_SQL_CODE_LEN } from "../../utils";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
+import { getSandboxDBSchemaIdForAssignment } from "../../utils";
 
 const SqlJobPayloadSchema = z.object({
   assignmentId: z.string().refine((id) => Types.ObjectId.isValid(`${id}`), {
@@ -31,7 +36,13 @@ const run_client_sql_code = async (req: Request, res: Response) => {
     res.status(404).json({ error: "Couldn't find the assignment!" });
     return;
   }
-  const assignmentSchema = `assignment_${bodyData.assignmentId}`;
+  const assignmentSchema = getSandboxDBSchemaIdForAssignment(
+    bodyData.assignmentId,
+  );
+
+  const solution = await getAssignmentSolutionByAssignmentIdCached(
+    bodyData.assignmentId,
+  );
 
   const taskId = await TaskQueueClient.enqueue({
     assignmentId: bodyData.assignmentId,
@@ -39,6 +50,8 @@ const run_client_sql_code = async (req: Request, res: Response) => {
     assignmentSchema,
     mode: bodyData.mode,
     writeTables: bodyData.writeTables,
+    solutionSql: solution?.solutionSql || undefined,
+    validationSql: solution?.validationSql || undefined,
   });
 
   res.status(202).json({ taskId });

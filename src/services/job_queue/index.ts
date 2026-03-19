@@ -5,7 +5,7 @@ import {
   BLLMQ_JOB_NAME,
   ADMIN_ASSIGNMENT_SEED_JOB_NAME,
   BULLMQ_JOB_FAILURE_MESSAGE,
-} from "../../utils/constants";
+} from "../../utils";
 import { logger, envVars } from "../../config";
 import { Types } from "mongoose";
 
@@ -15,6 +15,8 @@ interface SqlJobPayload {
   assignmentSchema: string;
   mode: "read" | "write";
   writeTables?: Array<string>;
+  solutionSql?: string;
+  validationSql?: string;
 }
 
 export interface AdminAssignmentSeedJobPayload {
