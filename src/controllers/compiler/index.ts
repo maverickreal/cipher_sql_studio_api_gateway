@@ -18,8 +18,6 @@ const SqlJobPayloadSchema = z.object({
     .max(MAX_USER_SQL_CODE_LEN)
     .nonempty({ message: "An invalid SQL query provided!" })
     .nonoptional(),
-  mode: z.enum(["read", "write"]).nonoptional(),
-  writeTables: z.array(z.string().nonempty().nonoptional()).optional(),
 });
 
 const run_client_sql_code = async (req: Request, res: Response) => {
@@ -48,8 +46,7 @@ const run_client_sql_code = async (req: Request, res: Response) => {
     assignmentId: bodyData.assignmentId,
     userSql: bodyData.userSql,
     assignmentSchema,
-    mode: bodyData.mode,
-    writeTables: bodyData.writeTables,
+    mode: assignment.mode,
     solutionSql: solution?.solutionSql || undefined,
     validationSql: solution?.validationSql || undefined,
     orderMatters: solution?.orderMatters,

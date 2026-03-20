@@ -11,6 +11,11 @@ export enum ASSIGNMENT_DIFFICULTY {
   HARD = "hard",
 }
 
+export enum ASSIGNMENT_ACCESS_LEVEL {
+  READ = "read",
+  WRITE = "write",
+}
+
 export const MAX_USER_SQL_CODE_LEN = 5000;
 export const JOB_TTL_S = 600;
 
@@ -23,10 +28,10 @@ export const KILL_SIGNALS_TO_INTERCEPT = [
 
 export const SERVER_KILL_SIGNAL_EXIT_CODE = 2;
 
-export const enum ENV_MODE {
-  DEV,
-  STAGING,
-  PROD,
+export enum ENV_MODE {
+  DEV = "DEV",
+  STAGING = "STAGING",
+  PROD = "PROD",
 }
 
 export const GLOBAL_RATE_LIMIT_WINDOW_SIZE = 60_000;
@@ -45,3 +50,4 @@ export const ADMIN_ASSIGNMENT_SEED_JOB_NAME =
   "client_sql_studio_admin_assignment_seed";
 export const BULLMQ_JOB_FAILURE_MESSAGE = "BullMQ task failed!";
 export const SANDBOX_DB_SCHEMA_PREFIX = "assignment_schema_";
+export const ASSIGNMENT_SEED_JOB_MAX_ATTEMPTS = 3;

@@ -3,7 +3,7 @@ import { envVars } from "./config";
 import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils";
 import express from "express";
 import cors from "cors";
-import apiV1Router from "./routes/api/v1";
+import { apiV1Router, internalRouter } from "./routes";
 import { errorHandler, apiLogger, GlobalRateLimitMware } from "./middleware/";
 
 const app = express();
@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true, limit: EXPRESS_REQ_BODY_LIMIT }));
 app.use(apiLogger);
 
 app.use("/api/v1", apiV1Router);
+app.use("/internal", internalRouter);
 
 app.use(errorHandler);
 

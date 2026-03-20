@@ -5,6 +5,7 @@ import {
   BLLMQ_JOB_NAME,
   ADMIN_ASSIGNMENT_SEED_JOB_NAME,
   BULLMQ_JOB_FAILURE_MESSAGE,
+  ASSIGNMENT_SEED_JOB_MAX_ATTEMPTS,
 } from "../../utils";
 import { logger, envVars } from "../../config";
 import { Types } from "mongoose";
@@ -14,7 +15,6 @@ interface SqlJobPayload {
   userSql: string;
   assignmentSchema: string;
   mode: "read" | "write";
-  writeTables?: Array<string>;
   solutionSql?: string;
   validationSql?: string;
   orderMatters?: boolean;
@@ -66,6 +66,8 @@ class TaskQueueClient {
       {
         removeOnComplete: { age: JOB_TTL_S },
         removeOnFail: { age: JOB_TTL_S },
+        attempts: ASSIGNMENT_SEED_JOB_MAX_ATTEMPTS,
+        backoff: { type: "exponential", delay: 1000 },
       },
     );
 

@@ -1,8 +1,9 @@
 import { Schema, InferSchemaType, Model, model } from "mongoose";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import {
   getSandboxDBSchemaIdForAssignment,
   ASSIGNMENT_DIFFICULTY,
+  ASSIGNMENT_ACCESS_LEVEL,
 } from "../../../../utils";
 
 const AssignmentSchema = new Schema(
@@ -10,12 +11,14 @@ const AssignmentSchema = new Schema(
     title: { type: String, required: true, minLength: 1 },
     description: { type: String, required: true, minLength: 1 },
     difficulty: { type: String, required: true, enum: ASSIGNMENT_DIFFICULTY },
+    mode: { type: String, required: true, enum: ASSIGNMENT_ACCESS_LEVEL },
     sampleInput: {
       type: [{ type: String, required: true, trim: true, minlength: 1 }],
       required: true,
       minLength: 1,
     },
     sampleOutput: { type: String, required: true, minLength: 1 },
+    pgSchemaReady: { type: Boolean, required: true },
   },
   { timestamps: true },
 );
@@ -24,6 +27,7 @@ const AssignmentValidatorSchema = {
   title: z.string().nonempty().nonoptional(),
   description: z.string().nonempty().nonoptional(),
   difficulty: z.enum(ASSIGNMENT_DIFFICULTY).nonoptional(),
+  mode: z.enum(ASSIGNMENT_ACCESS_LEVEL).nonoptional(),
   sampleInput: z
     .array(z.string().nonempty().nonoptional())
     .nonempty()
@@ -44,4 +48,4 @@ const Assignment = model<IAssignment, AssignmentModel>(
   AssignmentSchema,
 );
 
-export { Assignment, IAssignment, AssignmentValidatorSchema };
+export { Assignment, AssignmentValidatorSchema };

@@ -1,5 +1,5 @@
 import { Schema, InferSchemaType, Model, model } from "mongoose";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 const AssignmentSolutionSchema = new Schema(
   {
@@ -11,6 +11,7 @@ const AssignmentSolutionSchema = new Schema(
     },
     solutionSql: { type: String, required: false, minLength: 1 },
     validationSql: { type: String, required: false, minLength: 1 },
+    initSql: { type: String, required: true, minLength: 1 },
     orderMatters: { type: Boolean, required: true },
   },
   { timestamps: true },
@@ -19,6 +20,7 @@ const AssignmentSolutionSchema = new Schema(
 const AssignmentSolutionValidatorSchema = {
   solutionSql: z.string().nonempty().optional(),
   validationSql: z.string().nonempty().optional(),
+  initSql: z.string().nonempty().nonoptional(),
   orderMatters: z.boolean().nonoptional(),
 };
 
@@ -31,8 +33,4 @@ const AssignmentSolution = model<IAssignmentSolution, AssignmentSolutionModel>(
   AssignmentSolutionSchema,
 );
 
-export {
-  AssignmentSolution,
-  IAssignmentSolution,
-  AssignmentSolutionValidatorSchema,
-};
+export { AssignmentSolution, AssignmentSolutionValidatorSchema };
