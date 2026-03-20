@@ -18,7 +18,7 @@ const AssignmentSchema = new Schema(
       minLength: 1,
     },
     sampleOutput: { type: String, required: true, minLength: 1 },
-    pgSchemaReady: { type: Boolean, required: true },
+    pgSchemaReady: { type: Boolean, required: false, default: false },
   },
   { timestamps: true },
 );
@@ -33,6 +33,7 @@ const AssignmentValidatorSchema = {
     .nonempty()
     .nonoptional(),
   sampleOutput: z.string().nonempty().nonoptional(),
+  pgSchemaReady: z.boolean().optional(),
 };
 
 type IAssignment = InferSchemaType<typeof AssignmentSchema>;

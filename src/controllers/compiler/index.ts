@@ -34,6 +34,13 @@ const run_client_sql_code = async (req: Request, res: Response) => {
     res.status(404).json({ error: "Couldn't find the assignment!" });
     return;
   }
+
+  if (!assignment.pgSchemaReady) {
+    res.status(503).json({ error: "Assignment unavailable at the moment!" });
+
+    return;
+  }
+
   const assignmentSchema = getSandboxDBSchemaIdForAssignment(
     bodyData.assignmentId,
   );

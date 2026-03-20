@@ -3,15 +3,17 @@ import { Assignment, AssignmentSolution } from "../../data";
 import {
   ASSIGNMENT_CACHE_TTL_S,
   ASSIGNMENT_KEY_PREFIX,
-  ASSIGNMENT_LIST_KEY,
   ASSIGNMENT_SOLUTION_KEY_PREFIX,
 } from "../../utils";
 
 const getAssignmentByIdCached = async (id: string) => {
   const cacheClient = (await CacheClient.get())!;
-  const cachedAssignment = await cacheClient.get(ASSIGNMENT_KEY_PREFIX + id);
+  const cacheKey = ASSIGNMENT_KEY_PREFIX + id;
+  const cachedAssignment = await cacheClient.get(cacheKey);
 
   if (cachedAssignment) {
+    await cacheClient.expire(cacheKey, ASSIGNMENT_CACHE_TTL_S);
+
     return JSON.parse(cachedAssignment);
   }
 
@@ -19,7 +21,7 @@ const getAssignmentByIdCached = async (id: string) => {
 
   if (assignmentDB) {
     await cacheClient.setEx(
-      ASSIGNMENT_KEY_PREFIX + id,
+      cacheKey,
       ASSIGNMENT_CACHE_TTL_S,
       JSON.stringify(assignmentDB),
     );
@@ -28,33 +30,16 @@ const getAssignmentByIdCached = async (id: string) => {
   return assignmentDB;
 };
 
-const getAllAssignmentsCached = async () => {
-  const cacheClient = (await CacheClient.get())!;
-  const cachedAssignments = await cacheClient.get(ASSIGNMENT_LIST_KEY);
-
-  if (cachedAssignments) {
-    return JSON.parse(cachedAssignments);
-  }
-  const assignmentsDB = await Assignment.find().lean();
-
-  await cacheClient.setEx(
-    ASSIGNMENT_LIST_KEY,
-    ASSIGNMENT_CACHE_TTL_S,
-    JSON.stringify(assignmentsDB),
-  );
-
-  return assignmentsDB;
-};
-
 const getAssignmentSolutionByAssignmentIdCached = async (
   assignmentId: string,
 ) => {
   const cacheClient = (await CacheClient.get())!;
-  const cachedSolution = await cacheClient.get(
-    ASSIGNMENT_SOLUTION_KEY_PREFIX + assignmentId,
-  );
+  const cacheKey = ASSIGNMENT_SOLUTION_KEY_PREFIX + assignmentId;
+  const cachedSolution = await cacheClient.get(cacheKey);
 
   if (cachedSolution) {
+    await cacheClient.expire(cacheKey, ASSIGNMENT_CACHE_TTL_S);
+
     return JSON.parse(cachedSolution);
   }
 
@@ -64,7 +49,7 @@ const getAssignmentSolutionByAssignmentIdCached = async (
 
   if (solutionDB) {
     await cacheClient.setEx(
-      ASSIGNMENT_SOLUTION_KEY_PREFIX + assignmentId,
+      cacheKey,
       ASSIGNMENT_CACHE_TTL_S,
       JSON.stringify(solutionDB),
     );
@@ -73,8 +58,4 @@ const getAssignmentSolutionByAssignmentIdCached = async (
   return solutionDB;
 };
 
-export {
-  getAssignmentByIdCached,
-  getAllAssignmentsCached,
-  getAssignmentSolutionByAssignmentIdCached,
-};
+export { getAssignmentByIdCached, getAssignmentSolutionByAssignmentIdCached };
