@@ -5,3 +5,4 @@ cipher_sql_studio.code-workspace
 dist
 nodemon.json
 **/__tests__
+**/.DS_Store
