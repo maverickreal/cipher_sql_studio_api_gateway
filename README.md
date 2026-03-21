@@ -2,6 +2,20 @@
 
 REST API backend for the [CipherSqlStudio](../cipher_sql_studio) online SQL learning platform. Handles assignment management, SQL execution job dispatch via BullMQ, and admin operations.
 
+### **_I M P O R T A N T_** note for developers:
+
+To test/run the entire backend locally, all you need do is:
+
+1. Clone all the project repos:
+   - https://github.com/maverickreal/cipher_sql_studio
+   - https://github.com/maverickreal/cipher_sql_studio_sandbox
+   - https://github.com/maverickreal/cipher_sql_studio_api_gateway
+2. Run the following shell code, from within the orchestrator repo (cipher_sql_studio):
+   ```sh
+   chmod u+x ./init.dev.bash;
+   ./init.dev.bash;
+   ```
+
 ## Tech Stack
 
 | Technology           | Purpose                                |
@@ -105,15 +119,15 @@ Authenticated via `x-internal-api-key` header.
 
 ## Scripts
 
-| Command                  | Description                           |
-| ------------------------ | ------------------------------------- |
-| `npm run dev`            | Start dev server with nodemon         |
-| `npm run build`          | Compile TypeScript to `dist/`         |
-| `npm run start`          | Run compiled output (`dist/index.js`) |
-| `npm run test`           | Run tests with Vitest                 |
-| `npm run test:watch`     | Run tests in watch mode               |
-| `npm run lint`           | Lint source files with ESLint         |
-| `npm run format`         | Format source files with Prettier     |
+| Command              | Description                           |
+| -------------------- | ------------------------------------- |
+| `npm run dev`        | Start dev server with nodemon         |
+| `npm run build`      | Compile TypeScript to `dist/`         |
+| `npm run start`      | Run compiled output (`dist/index.js`) |
+| `npm run test`       | Run tests with Vitest                 |
+| `npm run test:watch` | Run tests in watch mode               |
+| `npm run lint`       | Lint source files with ESLint         |
+| `npm run format`     | Format source files with Prettier     |
 
 ## Project Structure
 
