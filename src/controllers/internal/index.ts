@@ -2,21 +2,12 @@ import { Request, Response } from "express";
 import { Types } from "mongoose";
 import { Assignment } from "../../data/db/models/assignment";
 import { AssignmentSolution } from "../../data/db/models/assignment_solution";
-import { logger, envVars } from "../../config";
+import { CacheClient } from "../../data";
+import { ASSIGNMENT_KEY_PREFIX } from "../../utils";
+import { logger } from "../../config";
 
 const cleanup_assignment = async (req: Request, res: Response) => {
-  const apiKey = req.headers["x-internal-api-key"];
-  if (apiKey !== envVars.INTERNAL_API_KEY) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
-
   const id = req.params.id as string;
-
-  if (!id || !Types.ObjectId.isValid(id)) {
-    res.status(400).json({ error: "Invalid assignment ID" });
-    return;
-  }
 
   try {
     const deletedAssignment = await Assignment.findByIdAndDelete(id);
@@ -41,4 +32,38 @@ const cleanup_assignment = async (req: Request, res: Response) => {
   }
 };
 
-export { cleanup_assignment };
+const confirm_assignment = async (req: Request, res: Response) => {
+  const assignmentId = `${req.params.id}`;
+
+  try {
+    const sandboxUpdatedAssignment = await Assignment.findByIdAndUpdate(
+      assignmentId,
+      {
+        pgSchemaReady: true,
+      },
+    );
+
+    if (!sandboxUpdatedAssignment) {
+      res.status(404).json({ error: "Assignment not found!" });
+      return;
+    }
+
+    const cacheClient = (await CacheClient.get())!;
+    await cacheClient.del(ASSIGNMENT_KEY_PREFIX + assignmentId);
+
+    logger.info(
+      { assignmentId },
+      `Uncached assignment ${assignmentId} and set 'pgSchemaReady=true'.`,
+    );
+
+    res.status(200).json({ success: true, assignmentId });
+  } catch (err) {
+    logger.error(
+      { assignmentId },
+      `Failed at updating the pgSchemaReady field for assignment ${assignmentId}!`,
+    );
+    res.status(500).json({ error: "Assignment confirmation failed!" });
+  }
+};
+
+export { cleanup_assignment, confirm_assignment };
