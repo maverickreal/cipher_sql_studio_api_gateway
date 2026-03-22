@@ -1,0 +1,397 @@
+{
+  "info": {
+    "_postman_id": "62ab79b0-0584-44c0-9039-71695bae79a1",
+    "name": "Cipher SQL Studio",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "15905495"
+  },
+  "item": [
+    {
+      "name": "Assignments",
+      "item": [
+        {
+          "name": "01 - Get All Assignments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/v1/assignments/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "assignments",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK - List of assignments",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": ""
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"assignments\": [\n    {\n      \"_id\": \"67d0f3a2b...\",\n      \"title\": \"Find all users\",\n      \"description\": \"Write a query to list all users...\",\n      \"difficulty\": \"easy\",\n      \"sampleTable\": \"| id | name |\\n| 1 | Alice |\",\n      \"sampleOutput\": \"...\",\n      \"createdAt\": \"2025-03-11T...\",\n      \"updatedAt\": \"2025-03-11T...\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "02 - Get Assignment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/v1/assignments/69bf1fe8ea3a2352b34d36e0",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "assignments",
+                "69bf1fe8ea3a2352b34d36e0"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/v1/assignments/69bf1fe8ea3a2352b34d36e0",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "assignments",
+                    "69bf1fe8ea3a2352b34d36e0"
+                  ]
+                }
+              },
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"assignment\": { ... full assignment object ... }\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/v1/assignments/69bf1fe8ea3a2352b34d36e0",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "assignments",
+                    "69bf1fe8ea3a2352b34d36e0"
+                  ]
+                }
+              },
+              "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"error\": \"Assignment not found\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SQL Execution",
+      "item": [
+        {
+          "name": "03 - Execute SQL Code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignmentId\": \"69bf1fe8ea3a2352b34d36e0\",\n  \"userSql\": \"SELECT * FROM users limit 5;\",\n  \"mode\": \"read\",\n  \"writeTables\": []\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/v1/assignments/client-sql-code-run/execute",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "assignments",
+                "client-sql-code-run",
+                "execute"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "202 Accepted - Job enqueued",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assignmentId\": \"69bf1fe8ea3a2352b34d36e0\",\n  \"userSql\": \"SELECT * FROM users limit 5;\",\n  \"mode\": \"read\",\n  \"writeTables\": []\n} ",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/v1/assignments/client-sql-code-run/execute",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "assignments",
+                    "client-sql-code-run",
+                    "execute"
+                  ]
+                }
+              },
+              "code": 202,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"taskId\": \"bullmq-job-id-12345\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "04 - Get Job Status (Poll)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/v1/assignments/client-sql-code-run/status/8",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "assignments",
+                "client-sql-code-run",
+                "status",
+                "8"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Completed (Read mode example)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/v1/assignments/client-sql-code-run/status/8",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "assignments",
+                    "client-sql-code-run",
+                    "status",
+                    "8"
+                  ]
+                }
+              },
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"status\": \"completed\",\n  \"result\": {\n    \"success\": true,\n    \"rows\": [\n      { \"id\": 1, \"name\": \"Alice\" }\n    ],\n    \"columns\": [\"id\", \"name\"],\n    \"rowCount\": 1,\n    \"executionTimeMs\": 23\n  }\n}"
+            },
+            {
+              "name": "200 - Failed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/v1/assignments/client-sql-code-run/status/8",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "assignments",
+                    "client-sql-code-run",
+                    "status",
+                    "8"
+                  ]
+                }
+              },
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": null,
+              "cookie": [],
+              "body": "{\n  \"status\": \"failed\",\n  \"result\": {\n    \"success\": false,\n    \"error\": \"relation \\\"users\\\" does not exist\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "create assignment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Basic select.\",\n    \"description\": \"Select the first 5 rows from the user table.\",\n    \"difficulty\": \"easy\",\n    \"sampleInput\": [\n        \"N/A\"\n    ],\n    \"sampleOutput\": \"N/A\",\n    \"solutionSql\": \"SELECT * from users limit 5;\",\n    // \"validationSql\": \"\",\n    \"mode\": \"read\",\n    \"orderMatters\": true,\n    \"initSql\": \"CREATE TABLE users (   id serial PRIMARY KEY,   first_name VARCHAR(50),   last_name VARCHAR(50),   email_address VARCHAR(255),   phone_number VARCHAR(25),   date_of_birth DATE,   address_1 VARCHAR(255),   address_2 VARCHAR(100),   city VARCHAR(100),   state VARCHAR(50),   postal_code VARCHAR(10),   created_at TIMESTAMP,   updated_at TIMESTAMP );  INSERT INTO users (id, first_name, last_name, email_address, phone_number, date_of_birth, address_1, address_2, city, state, postal_code, created_at, updated_at) VALUES   (1, 'Arnold', 'Mosciski', 'Gustave.Maggio@yahoo.com', NULL, '1995-10-29 23:57:08', '5600 Birch Close', NULL, 'Wilmington', 'Alabama', '06817-7539', '2026-03-19 06:28:44', '2026-03-19 14:47:14'),   (2, 'Melba', 'Walter', 'Chesley_Wintheiser@gmail.com', NULL, '1986-05-27 19:35:46', '34080 Lura Crest', 'Suite 108', 'Hacienda Heights', 'Illinois', '15732-8315', '2026-03-19 10:03:17', '2026-03-19 17:35:27'),   (3, 'Salma', 'Ratke-Hansen', 'Javonte_Reinger@hotmail.com', '957.971.6142 x526', '1958-03-25 14:36:03', '367 Jakayla Field', NULL, 'Centreville', 'Oklahoma', '87477', '2026-03-19 06:27:31', '2026-03-19 08:13:25'),   (4, 'Hester', 'Corkery', 'Howell.Barton43@hotmail.com', '1-619-728-5379 x80946', '1975-08-02 15:05:15', '89323 W Maple Street', NULL, 'Boulder', 'Virginia', '25320-7216', '2026-03-19 05:40:24', '2026-03-19 08:09:59'),   (5, 'Jan', 'Robel', 'Kianna.Lynch76@hotmail.com', '537-631-2975 x0322', '1967-07-15 02:01:05', '17520 Elouise Cliffs', NULL, 'Coconut Creek', NULL, '98540-0206', '2026-03-19 17:26:34', '2026-03-19 18:03:05'),   (6, 'Elna', 'Moen', 'Elisha54@hotmail.com', '603-648-1554', '1955-04-17 06:02:08', '24739 Sycamore Street', NULL, 'Hiramfurt', 'Virginia', '60858-6421', '2026-03-19 12:11:44', '2026-03-19 12:45:05'),   (7, 'Susana', 'Cartwright', 'Jaycee10@gmail.com', '806-925-7139', '1971-04-16 11:01:12', '9584 Warren Close', NULL, 'Fort Kenna', 'Vermont', '61748-9082', '2026-03-19 17:33:42', '2026-03-19 17:45:54'),   (8, 'Cynthia', 'Donnelly', 'Jaycee_Kuhic88@hotmail.com', '642-632-7171', '1973-08-15 14:09:31', '2835 Batz Views', NULL, 'Saginaw', 'Missouri', '77095', '2026-03-19 12:12:38', '2026-03-19 13:27:21'),   (9, 'Citlalli', 'Altenwerth', 'Paolo_Huels33@hotmail.com', '1-226-583-9839 x5139', '1950-02-21 13:54:36', '514 S Washington Street', NULL, 'Alessandroside', 'New Jersey', '88152', '2026-03-19 15:14:08', '2026-03-19 17:26:30'),   (10, 'Dariana', 'Pfannerstill', NULL, '(461) 448-2954 x5959', '1996-08-29 14:24:32', '88570 Emard Stream', NULL, 'South River', 'Vermont', '54376', '2026-03-19 18:16:58', '2026-03-19 18:37:50'),   (11, 'Jeffry', 'Weissnat', 'Filomena_Zieme43@hotmail.com', '1-743-266-6873', '1987-02-08 17:13:53', '76424 E 2nd Street', 'Apt. 571', 'Santa Fe', 'Kentucky', '08907', '2026-03-19 03:27:22', '2026-03-19 07:06:20'),   (12, 'Brennan', 'Baumbach', 'Reva81@yahoo.com', NULL, '1971-06-16 23:32:27', '3606 Karl Mill', 'Apt. 368', 'Rolfsonhaven', 'Florida', '62921-6134', '2026-03-18 23:04:54', '2026-03-19 11:56:58'),   (13, 'Leland', 'Murray', 'Gust_Wiegand@yahoo.com', '(597) 966-2867 x88492', '1982-04-01 05:43:28', '90916 Hirthe Skyway', NULL, 'Vacaville', NULL, '34545', '2026-03-18 22:18:37', '2026-03-19 09:22:23'),   (14, 'Chanelle', 'Konopelski', 'Nasir83@gmail.com', '431-587-5984 x595', '1990-08-14 11:37:57', '44750 N Park Street', NULL, 'Fisherland', 'South Carolina', '86226', '2026-03-19 13:22:44', '2026-03-19 13:55:39'),   (15, 'Kelly', 'Krajcik', 'Ariane.Anderson@hotmail.com', '(839) 381-6634', '1950-01-18 05:09:02', '98104 Bednar Hill', 'Suite 227', 'Lancaster', 'Pennsylvania', '95760', '2026-03-19 04:52:00', '2026-03-19 12:15:12'),   (16, 'Chaya', 'Marvin', 'Mathias_Hammes@hotmail.com', '571-665-2673 x102', NULL, '83212 16th Street', NULL, 'Union City', 'Nevada', '78654', '2026-03-19 01:02:25', '2026-03-19 05:56:04'),   (17, 'Ruby', 'Rau', 'Cassidy_Lesch@hotmail.com', NULL, '1968-09-13 05:27:33', '1608 Ophelia Ford', NULL, 'Darienland', 'Ohio', '22679', '2026-03-19 06:16:41', '2026-03-19 18:10:43'),   (18, 'Leta', 'Kerluke', 'Maudie84@yahoo.com', NULL, '1955-10-08 22:01:25', '14918 Rudy Meadow', NULL, 'New Tyshawnhaven', 'Arizona', '43073', '2026-03-18 20:43:41', '2026-03-19 05:25:08'),   (19, 'Blake', 'Wolff', 'Johathan.Leuschke@yahoo.com', '(921) 200-1818', '1966-12-21 22:49:59', '75879 Wuckert Bridge', NULL, 'Lake Name', 'Wyoming', '39501-1808', '2026-03-19 06:09:27', '2026-03-19 16:32:31'),   (20, 'Adriel', 'Waters', 'Mattie_Kuhn@gmail.com', '1-385-467-6197 x78210', '1989-02-14 05:57:38', NULL, NULL, 'Danielcester', 'Vermont', '05281', '2026-03-19 13:08:06', '2026-03-19 13:34:37'),   (21, 'Chris', 'Kreiger', 'Orlo7@yahoo.com', '1-408-642-2169 x62199', '2007-09-03 08:16:20', '4183 Ignatius Park', 'Apt. 376', 'Gordonburgh', 'Delaware', '59940-7793', '2026-03-19 06:26:06', '2026-03-19 16:13:22'),   (22, 'Lilian', 'Wolf', 'Hubert.Wunsch-Morissette98@gmail.com', '1-775-738-6958 x758', '1977-01-14 09:13:22', '52872 Delpha Cliff', NULL, 'Welchburgh', 'Mississippi', '98718-4993', '2026-03-19 03:28:25', '2026-03-19 07:55:49'),   (23, 'Myron', 'Quigley', 'Dawson_Gerlach@yahoo.com', '682.944.9481 x272', '1961-02-08 02:25:29', '341 Church View', NULL, NULL, 'South Dakota', '76215', '2026-03-18 20:13:07', '2026-03-18 21:07:08'),   (24, 'Shane', 'Medhurst', 'Maverick21@hotmail.com', '687-980-5030 x7858', '1949-11-17 23:58:04', '201 Central Avenue', NULL, 'West Macy', 'Kentucky', '85538-9371', '2026-03-19 04:55:01', '2026-03-19 09:45:44'),   (25, 'Lacy', 'Boyer', 'Patricia.Lindgren@yahoo.com', '933-685-4384 x817', '1966-09-21 21:06:19', '649 Feeney Oval', 'Apt. 234', 'Port Francisca', 'North Carolina', '77766-3243', '2026-03-19 08:20:26', '2026-03-19 09:17:19'),   (26, 'Delta', 'Von', 'Kieran_Lindgren59@hotmail.com', '(280) 830-2119 x64619', '1968-05-10 20:09:24', '49989 Kohler Course', NULL, 'West Rozella', 'Rhode Island', '07023', '2026-03-19 16:42:04', '2026-03-19 16:53:48'),   (27, 'Marilie', 'Adams', 'Erika_Ullrich@yahoo.com', '(804) 267-5673 x0560', '1992-04-24 09:28:39', '264 Willow Close', NULL, 'Nashville-Davidson', NULL, '57515', '2026-03-19 11:31:45', '2026-03-19 13:34:15'),   (28, 'Elenor', 'Quitzon', 'Arnulfo_Christiansen54@hotmail.com', '964.541.9053 x0755', '1998-10-30 00:55:26', '5271 Willms Shoal', NULL, 'New Clairchester', 'Michigan', NULL, '2026-03-19 03:27:50', '2026-03-19 08:14:28'),   (29, 'Martin', 'Mosciski', 'Winfield70@yahoo.com', '397.574.5832 x539', '1978-10-01 12:47:26', '120 Johnpaul Circle', 'Apt. 959', 'Anissaborough', 'Hawaii', '14983-3472', '2026-03-19 03:14:02', '2026-03-19 13:22:00'),   (30, 'Jamil', 'Koch', 'Aidan_Gerhold-Schuster8@hotmail.com', '(507) 416-6854 x7906', '2005-01-14 16:58:11', '65654 Frederik Fords', NULL, 'Bonita Springs', 'Indiana', '94397', '2026-03-19 02:19:12', '2026-03-19 06:56:56'),   (31, 'Filiberto', 'Keeling', 'Jeffrey_Terry3@yahoo.com', '1-361-390-4783', '2004-09-01 22:59:28', '4015 Ferry Road', 'Suite 353', 'Alibury', 'Utah', '50321-6313', '2026-03-19 08:30:11', '2026-03-19 12:18:04'),   (32, 'Madie', 'Windler-Hickle', 'Garland_Denesik4@hotmail.com', '(455) 851-2495 x6802', '1955-12-02 17:25:18', '445 Melody Square', NULL, 'Clovisstad', 'Maine', '21153-4557', '2026-03-19 16:53:06', '2026-03-19 17:45:07'),   (33, 'Nettie', 'Bins', 'Harmony.Murray@hotmail.com', '(833) 611-7041', '1991-05-31 00:27:29', '6782 Dewitt Light', 'Suite 352', 'Lake Treyton', 'Texas', '89658-5678', '2026-03-19 05:09:13', '2026-03-19 16:49:47'),   (34, 'Casey', 'Ullrich', 'Anthony22@hotmail.com', '(339) 639-2889', '1969-08-11 18:17:37', '75977 Verla Brook', NULL, 'Koleshire', 'New Mexico', '69356', '2026-03-19 10:40:20', '2026-03-19 13:57:27'),   (35, 'Troy', 'Smith', 'Stephen.Wyman79@hotmail.com', '801.889.9129', '1984-08-02 13:33:10', '220 Central Avenue', 'Apt. 761', 'Bettyeville', 'Kentucky', '26836', '2026-03-18 21:58:51', '2026-03-19 15:05:04'),   (36, 'Micaela', 'Rippin', 'Zachary.Volkman@gmail.com', '983-502-5126 x44565', '1962-12-23 09:45:09', '2131 Celestino Lakes', NULL, 'Fort Rita', 'Missouri', '44321', '2026-03-19 00:47:06', '2026-03-19 03:01:14'),   (37, 'Frances', 'Raynor', 'Durward.Walker89@hotmail.com', NULL, '1968-03-02 20:10:51', '727 St John''s Road', NULL, 'Cordieside', 'Montana', '21431-7530', '2026-03-18 22:14:07', '2026-03-18 22:55:16'),   (38, 'Angelica', 'Ferry', 'Adrian_Feil@gmail.com', NULL, '1984-10-02 13:52:30', '8996 The Poplars', NULL, NULL, 'Ohio', '75992', '2026-03-19 06:44:51', '2026-03-19 13:34:35'),   (39, 'Meredith', 'Lowe', 'Treva.Kessler83@gmail.com', '(862) 332-3378 x37155', '1957-10-17 19:05:08', '5872 N Broadway Street', NULL, 'Johnshaven', 'Tennessee', '31633-4202', '2026-03-19 16:49:49', '2026-03-19 18:02:15'),   (40, 'Victor', 'Hirthe', 'Alicia_Barton@hotmail.com', '676.286.0483 x04127', '1963-01-16 19:42:20', '26491 Marge Stream', 'Suite 742', 'Port Orie', 'Oklahoma', '26261-9487', '2026-03-18 23:12:38', '2026-03-18 23:29:31'),   (41, 'Clemens', 'Ratke', 'Dylan1@yahoo.com', '794-467-7210 x953', '1955-01-31 04:52:23', NULL, 'Suite 168', 'Fort Leonie', 'Virginia', '98985', '2026-03-18 20:29:57', '2026-03-19 12:08:48'),   (42, 'Demarcus', 'Reynolds', 'Ashlee.Carroll@yahoo.com', NULL, '1980-08-07 12:25:45', '367 N Harrison Street', 'Apt. 609', 'Berenicestad', NULL, '04541', '2026-03-19 03:23:29', '2026-03-19 08:01:26'),   (43, 'Genevieve', 'Bernhard', 'Ron.Howe@gmail.com', '(203) 448-5158', '1993-06-07 13:42:08', '2164 Emilio Orchard', 'Apt. 213', 'South Hermannview', 'Alabama', '17744-7252', '2026-03-19 18:17:10', '2026-03-19 18:36:18'),   (44, 'Xander', 'Von', 'Chadrick_Brown86@hotmail.com', '614-921-5987 x01077', '1968-03-26 23:03:18', '5819 Gislason Pike', NULL, 'East Marleyview', 'New Mexico', '87512', '2026-03-19 09:04:37', '2026-03-19 12:17:13'),   (45, 'Lonie', 'Auer', 'Reid.Rolfson@hotmail.com', NULL, '1953-11-18 01:31:37', '8200 Morar Meadow', NULL, 'West Octavia', 'North Dakota', '44093-7638', '2026-03-19 18:01:55', '2026-03-19 18:41:15'),   (46, 'Berry', 'Schmidt', 'Arturo.Huel36@yahoo.com', '(838) 962-5601 x202', '1980-03-22 23:45:24', '541 Blind Lane', NULL, 'La Mirada', 'Pennsylvania', '50961-8249', '2026-03-19 14:39:52', '2026-03-19 16:38:28'),   (47, 'Mandy', 'Hilll', 'Kareem46@gmail.com', '(500) 647-5867 x3762', '1988-06-04 01:36:06', NULL, 'Suite 504', 'Beckerfield', 'Rhode Island', '04828', '2026-03-19 11:37:01', '2026-03-19 16:22:41'),   (48, 'Brannon', 'Morissette', 'Niko79@yahoo.com', '(561) 778-2049 x635', '1961-10-08 05:42:26', '5946 Elouise Wall', NULL, 'South Kitty', 'Arizona', '92288-5383', '2026-03-19 01:42:48', '2026-03-19 18:20:38'),   (49, 'Aida', 'Willms-Zboncak', 'Taylor47@hotmail.com', NULL, NULL, '22043 Meagan Fords', NULL, 'New Lacey', 'Missouri', '42959', '2026-03-18 21:08:37', '2026-03-19 16:38:32'),   (50, 'Willa', 'Fadel', 'Austin2@yahoo.com', '238.591.5888 x388', '1981-09-29 04:45:51', '9967 Marsh Lane', 'Apt. 937', 'Bettyville', 'California', '41585-8234', '2026-03-19 02:06:57', '2026-03-19 11:39:59'),   (51, 'Hipolito', 'Cummerata', NULL, '1-872-828-8970 x3730', '1981-11-09 19:22:48', '970 A Street', NULL, 'Antwanberg', 'Connecticut', '58858', '2026-03-18 22:01:49', '2026-03-19 09:08:49'),   (52, 'Janick', 'Friesen', 'Joaquin.Murazik@yahoo.com', '(525) 219-0798 x7812', '1957-02-04 18:23:49', '249 Highfield Avenue', 'Apt. 370', 'New Milanton', 'New Jersey', '69139-8127', '2026-03-19 16:42:34', '2026-03-19 16:55:06'),   (53, 'Vita', 'Haag', 'Angela.VonRueden@gmail.com', '862.990.3875 x73431', '1959-12-02 01:44:58', '3091 Muller Heights', NULL, 'Ankundingfurt', 'New York', '30351-1792', '2026-03-19 13:46:23', '2026-03-19 17:49:44'),   (54, 'Trevor', 'Pfannerstill', 'Stewart_Gleason@yahoo.com', '432-976-9399 x43810', '1995-12-30 05:12:41', '83257 Aufderhar Junctions', NULL, 'Faheyton', 'North Dakota', '31512', '2026-03-19 03:55:55', '2026-03-19 06:02:39'),   (55, 'Cassidy', 'Franey', 'Amani0@yahoo.com', '293.691.1645', '1991-02-13 14:11:29', '17052 Kuhic Gateway', 'Apt. 290', 'West Jamar', 'Utah', '65990-8885', '2026-03-18 20:27:21', '2026-03-19 06:15:13'),   (56, 'Josiane', 'Sipes', 'Otis79@yahoo.com', '(725) 686-7554 x17847', '1948-09-25 06:03:48', '202 Columbia Avenue', NULL, 'Elmorebury', 'California', '00317-2296', '2026-03-19 12:49:47', '2026-03-19 15:55:57'),   (57, 'Montana', 'Rempel', 'Jace_Mohr@gmail.com', '1-643-947-2955', '1965-06-20 23:33:43', '85626 Daugherty Villages', NULL, 'East Jamarcus', 'Colorado', '09596', '2026-03-19 11:50:30', '2026-03-19 16:53:01'),   (58, 'Perry', 'Smitham', 'Terrell_Ondricka23@gmail.com', '1-990-806-6004 x789', '1957-03-19 04:28:31', '7785 Wendell Park', NULL, 'Hermannburgh', 'Delaware', '74865', '2026-03-19 16:01:36', '2026-03-19 16:50:37'),   (59, 'Jalen', 'O''Connell-Sipes', 'Amparo20@gmail.com', NULL, '1987-07-31 09:42:07', '3668 Turcotte Cliff', 'Suite 825', 'Lake Norval', 'Montana', '52464', '2026-03-19 08:58:02', '2026-03-19 14:16:26'),   (60, 'Margret', 'Cronin', 'Cody_Bartell@yahoo.com', '446-273-1692 x96140', '1960-01-09 09:27:12', '18583 Royal Rue', NULL, 'West Kasandra', 'Virginia', '23109', '2026-03-19 06:03:23', '2026-03-19 17:00:37'),   (61, 'Rollin', 'Lowe', 'Gust_Auer@yahoo.com', '220.743.9990 x243', '1949-04-01 18:25:53', '85172 Twila Via', NULL, 'Dothan', 'Missouri', '91354-0723', '2026-03-19 09:01:05', '2026-03-19 17:21:13'),   (62, 'Rosario', 'Kulas', 'Marta_Stehr@hotmail.com', '516-805-3891', NULL, '5082 Weber Streets', NULL, 'Lehnerside', 'New Jersey', '59695', '2026-03-19 06:11:33', '2026-03-19 06:27:53'),   (63, 'Aylin', 'Sporer', 'Elnora_Bashirian35@yahoo.com', '323.491.7408', '1980-03-03 16:13:01', '1469 Chaya Meadow', 'Suite 716', NULL, 'Idaho', '45268-6521', '2026-03-18 22:11:19', '2026-03-19 03:36:48'),   (64, 'Maci', 'Wintheiser', 'Einar27@hotmail.com', '1-883-399-6448 x3605', '1976-06-06 13:15:58', '455 Nolan Street', NULL, 'East Raymond', 'Kansas', '31111', '2026-03-19 06:56:43', '2026-03-19 08:26:50'),   (65, 'Hassie', 'Ferry', 'Gail25@yahoo.com', '1-811-486-3929 x4114', '1951-04-17 18:03:10', '474 Steuber Island', NULL, 'Ankeny', 'Pennsylvania', '26707-4170', '2026-03-19 16:06:50', '2026-03-19 18:06:32'),   (66, 'Terrell', 'Robel', 'Nels.Brakus@gmail.com', '279-761-1515 x34518', '1973-07-09 02:43:26', '31565 Mariela Mills', NULL, 'Fort Matteofort', 'Kentucky', '21084-8384', '2026-03-19 15:39:25', '2026-03-19 18:34:51'),   (67, 'Werner', 'Christiansen-Conn', 'Anne_Jacobi85@gmail.com', '523-639-4790 x42509', '1988-07-28 12:42:14', '398 Freeda Well', NULL, 'Nyahburgh', 'Illinois', '09624', '2026-03-19 04:36:31', '2026-03-19 09:44:14'),   (68, 'Katelynn', 'Cummings', 'Samir_Bode@yahoo.com', '1-552-688-1281 x58196', '2005-06-13 05:13:22', '6255 Main Street E', NULL, 'South Dinoland', NULL, '86939-2035', '2026-03-19 06:22:40', '2026-03-19 06:27:00'),   (69, 'Michele', 'Hirthe', 'Sylvester89@yahoo.com', '411.601.0833', '1978-08-11 00:36:30', '8872 Hillside Close', NULL, 'Kaylaburgh', 'West Virginia', '48119', '2026-03-19 13:13:53', '2026-03-19 16:28:14'),   (70, 'Lazaro', 'Russel', 'Arlene_Lakin0@gmail.com', '506-740-2601 x95383', '1954-05-18 02:52:18', '8065 Samara Curve', NULL, 'Vivienshire', 'Idaho', '98388', '2026-03-19 05:34:29', '2026-03-19 13:58:49'),   (71, 'Cassandra', 'Weimann', 'Michael.OConner@hotmail.com', NULL, '1957-12-23 22:57:20', '63058 Schuster Shores', NULL, 'Ameliatown', 'Massachusetts', '39601-8298', '2026-03-19 16:50:10', '2026-03-19 16:52:00'),   (72, 'Darby', 'Flatley', 'Jeffry_Swift98@gmail.com', '623-622-6298 x64034', '1992-05-13 02:26:38', '1586 Paucek Mission', NULL, 'East Alisa', 'Delaware', '17145-0639', '2026-03-19 17:06:54', '2026-03-19 18:34:56'),   (73, 'Ben', NULL, 'Catherine37@hotmail.com', '529-826-0169 x3749', '1977-10-13 15:45:00', '2889 W Union Street', NULL, 'Lake Rosendo', 'Nevada', '84987', '2026-03-19 13:37:48', '2026-03-19 16:06:03'),   (74, 'Walter', 'Pfeffer', 'Savanah.Romaguera23@gmail.com', '791.554.0976', '1982-09-08 09:22:37', '57595 Schultz Village', NULL, 'Carterberg', 'Indiana', '72796-6625', '2026-03-19 05:14:55', '2026-03-19 05:56:23'),   (75, 'Adolf', 'Keebler', 'Anahi95@gmail.com', '1-426-299-2987 x323', '1986-08-03 22:52:27', '2000 Bianka Grove', 'Suite 945', 'Giuseppeland', 'Arkansas', '95240', '2026-03-19 08:06:25', '2026-03-19 17:23:18'),   (76, 'Melissa', 'Schultz', 'Titus.Labadie18@gmail.com', '(453) 471-7341 x0526', '1974-01-15 10:27:59', '33370 McDermott Shore', NULL, 'Casperville', 'Tennessee', '00830', '2026-03-18 23:38:26', '2026-03-19 00:42:47'),   (77, 'Kim', 'Flatley', 'Gavin22@hotmail.com', '1-960-567-5207 x919', '1960-06-27 21:56:42', '191 Genoveva Fields', NULL, 'North Marquisefort', 'Maryland', '68369', '2026-03-19 14:59:34', '2026-03-19 16:15:58'),   (78, 'Sienna', 'Douglas', 'Hazle.Frami@hotmail.com', '413-392-2244 x59779', '2000-11-08 09:04:17', '7623 N Court Street', NULL, 'Hayestown', 'Massachusetts', '58854', '2026-03-19 11:09:32', '2026-03-19 15:50:51'),   (79, 'Clair', 'Moen', 'Lelah53@hotmail.com', '532.563.4004', '1957-06-18 02:50:13', '628 W Main Street', NULL, 'Carsonshire', 'Massachusetts', '68870-7616', '2026-03-19 00:45:41', '2026-03-19 05:21:51'),   (80, 'Haylie', 'Hauck', 'Patsy42@yahoo.com', '848.551.9928 x22940', '1963-02-09 12:02:53', '279 Williamson Club', 'Suite 277', 'Tremblayberg', 'Texas', '79817', '2026-03-19 18:00:43', '2026-03-19 18:10:53'),   (81, 'Pablo', 'Spinka', 'Jefferey_Ziemann-Price@gmail.com', NULL, '1949-02-22 14:54:23', '13291 Jacobi Landing', NULL, 'Boston', 'North Carolina', '24539-3320', '2026-03-19 09:56:57', '2026-03-19 11:45:15'),   (82, 'Dustin', 'Zulauf', 'Jaydon_Mayert@gmail.com', '290-353-0402', NULL, '721 A Street', NULL, 'Milford', 'Kansas', '79140-4727', '2026-03-18 20:09:20', '2026-03-19 11:28:06'),   (83, NULL, 'Ortiz', 'Cristal.Gerhold@yahoo.com', '1-267-961-7757 x18995', '1994-09-21 15:40:16', '79620 Emmet Plaza', NULL, 'East Neal', 'Indiana', '43301-5546', '2026-03-19 15:33:24', '2026-03-19 17:56:53'),   (84, NULL, 'Schiller', 'Lexus_Hermiston-Ledner22@gmail.com', NULL, '1977-10-01 12:28:37', NULL, 'Suite 211', NULL, 'Hawaii', '26249', '2026-03-19 18:05:35', '2026-03-19 18:16:51'),   (85, 'Eugenia', 'Goldner', 'Orpha.Volkman@gmail.com', '359.856.8785', '1986-02-25 11:36:10', '61774 Langosh Points', NULL, 'Fadelport', 'Oregon', '09847', '2026-03-19 08:08:37', '2026-03-19 10:07:49'),   (86, 'Clark', 'Heller', 'Franco59@hotmail.com', '818-323-5611 x65866', '1962-11-07 14:18:43', '30274 Brown Valley', NULL, 'Fort Jillian', 'Florida', '14095-6394', '2026-03-19 12:26:38', '2026-03-19 13:50:29'),   (87, 'Bettie', 'Beer', 'Kellen_Gleichner88@gmail.com', '368-378-3560 x8611', '1991-01-22 05:46:49', '7677 Bednar Island', NULL, 'North Tyreekborough', 'Oklahoma', '85480-9172', '2026-03-19 04:45:55', '2026-03-19 09:27:08'),   (88, 'Katarina', 'Wuckert', 'Genesis_Crist15@yahoo.com', '1-598-248-2419 x4285', '2006-10-14 20:42:07', '6966 Morissette Trafficway', NULL, 'Redondo Beach', 'Tennessee', '27637', '2026-03-18 22:17:57', '2026-03-19 02:35:20'),   (89, 'Judson', 'Kub', 'Carmel39@hotmail.com', '415-753-1402 x84900', '1996-05-05 23:18:08', '46778 Hallie Orchard', NULL, 'Olympia', 'California', NULL, '2026-03-19 03:38:42', '2026-03-19 09:21:18'),   (90, 'Eldora', 'Powlowski', 'Ruth59@hotmail.com', '961-536-2871', '1977-09-02 23:02:58', '31669 Lodge Close', NULL, 'Felixside', 'New Hampshire', '71065-7054', '2026-03-18 22:18:17', '2026-03-19 05:22:14'),   (91, 'Garnett', 'Orn', 'Kelsi.Mraz@hotmail.com', '1-456-575-5572', '1969-01-28 13:53:53', '2195 Leann Hills', NULL, 'Victorville', 'Virginia', '33792', '2026-03-19 04:36:34', '2026-03-19 14:25:54'),   (92, 'Toy', 'Kris', 'Remington.Macejkovic@yahoo.com', '1-289-866-8874 x618', '1963-05-06 10:54:20', '6886 Nader Meadows', NULL, 'Centreville', 'Wisconsin', '45347', '2026-03-19 06:06:43', '2026-03-19 15:20:47'),   (93, 'Lindsay', 'Herman', 'Lou.Herzog@yahoo.com', '375-637-5823', '1991-10-06 09:36:15', '84027 W Maple Street', NULL, 'Lynchstad', 'New Jersey', '97183', '2026-03-19 07:11:00', '2026-03-19 12:48:03'),   (94, 'Rosendo', 'Johnson', 'Lon53@hotmail.com', '621.210.3520 x392', '1968-08-24 05:29:02', '8970 Kaela Radial', NULL, 'South Pamelaburgh', 'Minnesota', '83404-6374', '2026-03-19 02:07:14', '2026-03-19 08:25:27'),   (95, 'Eryn', 'Hamill', 'Hettie_Hettinger85@gmail.com', '(861) 878-5319', '1983-04-02 14:35:05', NULL, NULL, 'Bayerberg', 'North Dakota', NULL, '2026-03-19 17:39:10', '2026-03-19 18:19:00'),   (96, 'Adela', 'Greenholt', 'Destinee_Ortiz@hotmail.com', '(831) 961-0638 x50093', '1994-11-30 12:39:43', '171 State Street', 'Apt. 764', 'Gilbert', 'Utah', '43682-9217', '2026-03-19 06:33:42', '2026-03-19 17:41:46'),   (97, 'Hilbert', 'Leffler', 'Bernard_Nikolaus@hotmail.com', '934.231.9500 x44339', '2007-09-14 13:19:01', '190 Hunter Fall', 'Apt. 664', 'East Alfordfield', 'Arizona', '73934-6938', '2026-03-19 07:45:42', '2026-03-19 14:03:15'),   (98, 'Aimee', 'McClure', 'Vernon_Davis78@hotmail.com', NULL, '1984-05-01 12:11:44', '71775 Jackson Avenue', NULL, 'Effertzport', 'Utah', '93710', '2026-03-19 00:33:49', '2026-03-19 09:17:49'),   (99, 'Syble', 'Sauer', 'Elissa.Ortiz8@gmail.com', '(619) 832-0930 x9157', '2002-05-24 13:50:35', '174 Prosacco Ford', NULL, 'Roseville', 'Massachusetts', '99757-0807', '2026-03-19 10:49:23', '2026-03-19 10:52:09'),   (100, 'Tomasa', 'King-Weimann', 'Elta81@gmail.com', '1-244-297-4506 x26683', '1987-11-18 23:57:07', '99145 Reilly Rue', 'Apt. 169', 'Lillyburgh', 'Oregon', '76801-3165', '2026-03-19 02:31:07', '2026-03-19 04:27:17');\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/v1/admin/assignments",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "assignments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
