@@ -15,6 +15,7 @@ To test/run the entire backend locally, all you need do is:
    chmod u+x ./init.dev.bash;
    ./init.dev.bash;
    ```
+3. The postman collection file is present in the root dir of this project.
 
 ## Tech Stack
 
