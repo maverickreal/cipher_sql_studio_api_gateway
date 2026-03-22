@@ -1,6 +1,6 @@
 # CipherSqlStudio API Gateway
 
-REST API backend for the [CipherSqlStudio](../cipher_sql_studio) online SQL learning platform. Handles assignment management, SQL execution job dispatch via BullMQ, and admin operations.
+REST API backend for the online SQL learning platform. Handles assignment management, SQL execution job dispatch via BullMQ, and admin operations.
 
 ### **_I M P O R T A N T_** note for developers:
 
