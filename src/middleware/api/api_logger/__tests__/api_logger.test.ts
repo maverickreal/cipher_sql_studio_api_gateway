@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 
 vi.mock("pino-http", () => ({
-  default: vi.fn(() => {
+  pinoHttp: vi.fn(() => {
     return (req: unknown, res: unknown, next: () => void) => {
       next();
     };
@@ -17,7 +17,7 @@ vi.mock("../../../../config/index.js", () => ({
   },
 }));
 
-import pinoHttp from "pino-http";
+import { pinoHttp } from "pino-http";
 import { logger } from "../../../../config/index.js";
 import apiLogger from "../index.js";
 
