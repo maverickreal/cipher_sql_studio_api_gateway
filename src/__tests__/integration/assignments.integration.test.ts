@@ -16,6 +16,27 @@ vi.mock("../../middleware/rate_limiter/index.js", () => ({
   ExecuteRateLimitMware: (_req: any, _res: any, next: any) => next(),
 }));
 
+vi.mock("../../auth/index.js", () => ({
+  auth: {
+    api: {
+      getSession: vi.fn().mockResolvedValue({
+        user: {
+          id: "user-1",
+          email: "test@example.com",
+          name: "Test User",
+          role: "user",
+        },
+        session: { id: "session-1", userId: "user-1" },
+      }),
+    },
+  },
+}));
+
+vi.mock("../../middleware/auth/index.js", () => ({
+  requireAuth: (_req: any, _res: any, next: any) => next(),
+  requireAdmin: (_req: any, _res: any, next: any) => next(),
+}));
+
 const { MockAssignment, MockAssignmentSolution, AssignmentValidatorSchema, AssignmentSolutionValidatorSchema } = vi.hoisted(() => {
   const { z } = require("zod/v4");
   
