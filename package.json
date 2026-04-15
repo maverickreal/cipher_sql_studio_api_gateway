@@ -2,7 +2,7 @@
   "name": "cipher_sql_studio",
   "version": "1.0.0",
   "description": "The backend for an online SQL compiler website.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
