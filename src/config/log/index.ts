@@ -1,5 +1,5 @@
 import pino, { TransportTargetOptions } from "pino";
-import envVars from "../env";
+import envVars from "../env/index.js";
 
 const targets: Array<TransportTargetOptions> = [
   {

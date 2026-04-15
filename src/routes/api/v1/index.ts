@@ -1,6 +1,6 @@
 import { Router } from "express";
-import assignmentRouter from "./assignments";
-import adminRouter from "./admin";
+import assignmentRouter from "./assignments/index.js";
+import adminRouter from "./admin/index.js";
 
 const router = Router();
 

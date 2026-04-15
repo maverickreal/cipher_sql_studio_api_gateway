@@ -1,6 +1,6 @@
 import rateLimit, { RateLimitRequestHandler } from "express-rate-limit";
 import RedisStore from "rate-limit-redis";
-import { CacheClient } from "../../data";
+import { CacheClient } from "../../data/index.js";
 import {
   GLOBAL_RATE_LIMIT_WINDOW_SIZE,
   GLOBAL_RATE_LIMIT_PER_WINDOW,
@@ -8,7 +8,7 @@ import {
   EXECUTE_RATE_LIMIT_WINDOW_SIZE,
   EXECUTE_RATE_LIMIT_PER_WINDOW,
   RATE_LIMIT_ERROR,
-} from "../../utils";
+} from "../../utils/index.js";
 
 const getRateLimitMware = (
   scope: string,

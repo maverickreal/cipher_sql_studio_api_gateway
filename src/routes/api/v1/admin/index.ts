@@ -1,5 +1,5 @@
 import Router from "express";
-import { create_assignment } from "../../../../controllers/";
+import { create_assignment } from "../../../../controllers/index.js";
 
 const router = Router();
 

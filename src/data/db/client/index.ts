@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { type ServiceClient } from "../../../types";
-import { envVars, logger } from "../../../config";
+import { type ServiceClient } from "../../../types/index.js";
+import { envVars, logger } from "../../../config/index.js";
 
 class DBClient {
   private static clientInst: mongoose.Mongoose | null = null;

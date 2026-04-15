@@ -1,43 +1,43 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Request, Response } from "express";
-import { cleanup_assignment, confirm_assignment } from "../index";
+import { cleanup_assignment, confirm_assignment } from "../index.js";
 
 const { mockDel } = vi.hoisted(() => ({
   mockDel: vi.fn(),
 }));
 
-vi.mock("../../../data/db/models/assignment", () => ({
+vi.mock("../../../data/db/models/assignment/index.js", () => ({
   Assignment: {
     findByIdAndDelete: vi.fn(),
     findByIdAndUpdate: vi.fn(),
   },
 }));
 
-vi.mock("../../../data/db/models/assignment_solution", () => ({
+vi.mock("../../../data/db/models/assignment_solution/index.js", () => ({
   AssignmentSolution: {
     deleteOne: vi.fn(),
   },
 }));
 
-vi.mock("../../../data", () => ({
+vi.mock("../../../data/index.js", () => ({
   CacheClient: {
     get: vi.fn().mockResolvedValue({ del: mockDel }),
   },
 }));
 
-vi.mock("../../../utils", () => ({
+vi.mock("../../../utils/index.js", () => ({
   ASSIGNMENT_KEY_PREFIX: "client_sql_code_assignment:",
 }));
 
-vi.mock("../../../config", () => ({
+vi.mock("../../../config/index.js", () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),
   },
 }));
 
-import { Assignment } from "../../../data/db/models/assignment";
-import { AssignmentSolution } from "../../../data/db/models/assignment_solution";
+import { Assignment } from "../../../data/db/models/assignment/index.js";
+import { AssignmentSolution } from "../../../data/db/models/assignment_solution/index.js";
 
 describe("cleanup_assignment", () => {
   let mockRequest: Partial<Request>;

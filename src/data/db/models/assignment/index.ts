@@ -4,7 +4,7 @@ import {
   getSandboxDBSchemaIdForAssignment,
   ASSIGNMENT_DIFFICULTY,
   ASSIGNMENT_ACCESS_LEVEL,
-} from "../../../../utils";
+} from "../../../../utils/index.js";
 
 const AssignmentSchema = new Schema(
   {

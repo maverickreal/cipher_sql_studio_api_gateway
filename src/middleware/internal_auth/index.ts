@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { envVars } from "../../config";
+import { envVars } from "../../config/index.js";
 
 const reqHeadIntApiKeyValidMware = (
   req: Request,

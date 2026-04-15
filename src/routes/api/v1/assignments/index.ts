@@ -2,9 +2,9 @@ import Router from "express";
 import {
   retrieve_all_assignments,
   retrieve_assignment,
-} from "../../../../controllers";
-import clientSQLCodeRunRouter from "./execution";
-import { compressionMware } from "../../../../middleware/";
+} from "../../../../controllers/index.js";
+import clientSQLCodeRunRouter from "./execution/index.js";
+import { compressionMware } from "../../../../middleware/index.js";
 
 const router = Router();
 

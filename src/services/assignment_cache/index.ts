@@ -1,10 +1,10 @@
-import { CacheClient } from "../../data";
-import { Assignment, AssignmentSolution } from "../../data";
+import { CacheClient } from "../../data/index.js";
+import { Assignment, AssignmentSolution } from "../../data/index.js";
 import {
   ASSIGNMENT_CACHE_TTL_S,
   ASSIGNMENT_KEY_PREFIX,
   ASSIGNMENT_SOLUTION_KEY_PREFIX,
-} from "../../utils";
+} from "../../utils/index.js";
 
 const getAssignmentByIdCached = async (id: string) => {
   const cacheClient = (await CacheClient.get())!;

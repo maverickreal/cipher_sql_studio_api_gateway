@@ -2,16 +2,16 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { z } from "zod/v4";
 import request from "supertest";
 
-vi.mock("../../config", () => ({
+vi.mock("../../config/index.js", () => ({
   envVars: { CLIENT_URL: "http://localhost:3000" },
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
-vi.mock("../../middleware/api/api_logger", () => ({
+vi.mock("../../middleware/api/api_logger/index.js", () => ({
   default: (_req: any, _res: any, next: any) => next(),
 }));
 
-vi.mock("../../middleware/rate_limiter", () => ({
+vi.mock("../../middleware/rate_limiter/index.js", () => ({
   GlobalRateLimitMware: (_req: any, _res: any, next: any) => next(),
   ExecuteRateLimitMware: (_req: any, _res: any, next: any) => next(),
 }));
@@ -66,7 +66,7 @@ const { MockAssignment, MockAssignmentSolution, AssignmentValidatorSchema, Assig
   };
 });
 
-vi.mock("../../data", () => ({
+vi.mock("../../data/index.js", () => ({
   CacheClient: {
     get: vi.fn().mockResolvedValue({ sendCommand: vi.fn() }),
     connect: vi.fn(),
@@ -78,13 +78,13 @@ vi.mock("../../data", () => ({
   AssignmentSolutionValidatorSchema,
 }));
 
-vi.mock("../../data/db/models/assignment", () => ({
+vi.mock("../../data/db/models/assignment/index.js", () => ({
   default: MockAssignment,
   Assignment: MockAssignment,
   AssignmentValidatorSchema,
 }));
 
-vi.mock("../../data/db/models/assignment_solution", () => ({
+vi.mock("../../data/db/models/assignment_solution/index.js", () => ({
   default: MockAssignmentSolution,
   AssignmentSolution: MockAssignmentSolution,
   AssignmentSolutionValidatorSchema,
@@ -111,19 +111,19 @@ const { mockTaskQueueClient, mockJob } = vi.hoisted(() => {
   };
 });
 
-vi.mock("../../services/job_queue", () => ({
+vi.mock("../../services/job_queue/index.js", () => ({
   default: mockTaskQueueClient,
 }));
 
-vi.mock("../../services", () => ({
+vi.mock("../../services/index.js", () => ({
   getAssignmentByIdCached: vi.fn(),
   getAssignmentSolutionByAssignmentIdCached: vi.fn(),
   TaskQueueClient: mockTaskQueueClient,
 }));
 
-import app from "../../app";
-import * as services from "../../services";
-import { Assignment } from "../../data/db/models/assignment";
+import app from "../../app.js";
+import * as services from "../../services/index.js";
+import { Assignment } from "../../data/db/models/assignment/index.js";
 
 describe("Assignments API Integration", () => {
   const validId = "507f1f77bcf86cd799439011";

@@ -12,7 +12,7 @@ vi.mock("compression", () => ({
   default: mockCompression,
 }));
 
-vi.mock("../../../utils", () => ({
+vi.mock("../../../utils/index.js", () => ({
   COMPRESSION_MIDDLEWARE_LEVEL,
   COMPRESSION_MIDDLEWARE_THRESHOLD,
 }));

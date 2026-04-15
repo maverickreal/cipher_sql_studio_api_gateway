@@ -2,11 +2,11 @@ import { Router } from "express";
 import {
   run_client_sql_code,
   get_job_status,
-} from "../../../../../controllers";
+} from "../../../../../controllers/index.js";
 import {
   compressionMware,
   ExecuteRateLimitMware,
-} from "../../../../../middleware/";
+} from "../../../../../middleware/index.js";
 
 const router = Router();
 

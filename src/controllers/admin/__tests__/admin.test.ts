@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Request, Response } from "express";
 import { z } from "zod/v4";
 
-vi.mock("../../../config", () => ({
+vi.mock("../../../config/index.js", () => ({
   envVars: {},
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
-vi.mock("../../../data/db/models/assignment", () => ({
+vi.mock("../../../data/db/models/assignment/index.js", () => ({
   Assignment: {
     create: vi.fn(),
     findByIdAndUpdate: vi.fn(),
@@ -27,7 +27,7 @@ vi.mock("../../../data/db/models/assignment", () => ({
   },
 }));
 
-vi.mock("../../../data/db/models/assignment_solution", () => ({
+vi.mock("../../../data/db/models/assignment_solution/index.js", () => ({
   AssignmentSolution: {
     create: vi.fn().mockResolvedValue({}),
     deleteOne: vi.fn().mockResolvedValue({}),
@@ -39,17 +39,17 @@ vi.mock("../../../data/db/models/assignment_solution", () => ({
   },
 }));
 
-vi.mock("../../../services/job_queue", () => ({
+vi.mock("../../../services/job_queue/index.js", () => ({
   default: {
     enqueueAdminAssignmentSeedJob: vi.fn(),
     getStatus: vi.fn(),
   },
 }));
 
-import { create_assignment } from "../index";
-import { Assignment } from "../../../data/db/models/assignment";
-import { AssignmentSolution } from "../../../data/db/models/assignment_solution";
-import TaskQueueClient from "../../../services/job_queue";
+import { create_assignment } from "../index.js";
+import { Assignment } from "../../../data/db/models/assignment/index.js";
+import { AssignmentSolution } from "../../../data/db/models/assignment_solution/index.js";
+import TaskQueueClient from "../../../services/job_queue/index.js";
 
 describe("create_assignment controller", () => {
   let req: Partial<Request>;

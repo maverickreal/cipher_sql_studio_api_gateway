@@ -1,12 +1,12 @@
-import app from "./app";
-import { envVars, logger } from "./config";
-import { DBClient, CacheClient } from "./data";
-import { TaskQueueClient } from "./services";
+import app from "./app.js";
+import { envVars, logger } from "./config/index.js";
+import { DBClient, CacheClient } from "./data/index.js";
+import { TaskQueueClient } from "./services/index.js";
 import {
   SERVER_START_FAILURE_EXIT_CODE,
   KILL_SIGNALS_TO_INTERCEPT,
   SERVER_KILL_SIGNAL_EXIT_CODE,
-} from "./utils";
+} from "./utils/index.js";
 
 app
   .listen(envVars.SERVER_PORT, async () => {

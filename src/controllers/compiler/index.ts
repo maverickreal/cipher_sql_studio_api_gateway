@@ -3,11 +3,11 @@ import {
   getAssignmentByIdCached,
   getAssignmentSolutionByAssignmentIdCached,
   TaskQueueClient,
-} from "../../services";
-import { MAX_USER_SQL_CODE_LEN } from "../../utils";
+} from "../../services/index.js";
+import { MAX_USER_SQL_CODE_LEN } from "../../utils/index.js";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
-import { getSandboxDBSchemaIdForAssignment } from "../../utils";
+import { getSandboxDBSchemaIdForAssignment } from "../../utils/index.js";
 
 const SqlJobPayloadSchema = z.object({
   assignmentId: z.string().refine((id) => Types.ObjectId.isValid(`${id}`), {

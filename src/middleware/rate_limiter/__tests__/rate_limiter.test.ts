@@ -22,13 +22,13 @@ vi.mock("redis", () => ({
   __esModule: true,
 }));
 
-vi.mock("../../../data", () => ({
+vi.mock("../../../data/index.js", () => ({
   CacheClient: {
     get: vi.fn(() => Promise.resolve({ sendCommand: vi.fn() })),
   },
 }));
 
-vi.mock("../../../utils", () => ({
+vi.mock("../../../utils/index.js", () => ({
   GLOBAL_RATE_LIMIT_WINDOW_SIZE: 60_000,
   GLOBAL_RATE_LIMIT_PER_WINDOW: 100,
   REDIS_RATE_LIMIT_KEY_PREFIX: "cipher_sql_studio_rate_limit:",
@@ -37,7 +37,7 @@ vi.mock("../../../utils", () => ({
   RATE_LIMIT_ERROR: "API endpoint rate limit reached!",
 }));
 
-vi.mock("../../../config", () => ({
+vi.mock("../../../config/index.js", () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),

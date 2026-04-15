@@ -1,2 +1,2 @@
-export { default as CacheClient } from "./cache";
-export * from "./db";
+export { default as CacheClient } from "./cache/index.js";
+export * from "./db/index.js";

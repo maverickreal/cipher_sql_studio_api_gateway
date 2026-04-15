@@ -8,7 +8,7 @@ vi.mock("pino-http", () => ({
   }),
 }));
 
-vi.mock("../../../../config", () => ({
+vi.mock("../../../../config/index.js", () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),
@@ -18,8 +18,8 @@ vi.mock("../../../../config", () => ({
 }));
 
 import pinoHttp from "pino-http";
-import { logger } from "../../../../config";
-import apiLogger from "../index";
+import { logger } from "../../../../config/index.js";
+import apiLogger from "../index.js";
 
 describe("apiLogger middleware", () => {
   afterEach(() => {

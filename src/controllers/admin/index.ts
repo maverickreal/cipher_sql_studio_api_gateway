@@ -5,9 +5,9 @@ import {
   AssignmentValidatorSchema,
   AssignmentSolution,
   AssignmentSolutionValidatorSchema,
-} from "../../data";
-import TaskQueueClient from "../../services/job_queue";
-import { logger } from "../../config";
+} from "../../data/index.js";
+import TaskQueueClient from "../../services/job_queue/index.js";
+import { logger } from "../../config/index.js";
 
 const adminAssignmentSchema = z.object({
   ...AssignmentValidatorSchema,

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Request, Response, NextFunction } from "express";
-import validateInternalApiKey from "../index";
+import validateInternalApiKey from "../index.js";
 
-vi.mock("../../../config", () => ({
+vi.mock("../../../config/index.js", () => ({
   envVars: { INTERNAL_API_KEY: "test-api-key" },
 }));
 

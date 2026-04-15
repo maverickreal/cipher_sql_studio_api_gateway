@@ -1,13 +1,13 @@
 import { Queue } from "bullmq";
-import { type ServiceClient } from "../../types";
+import { type ServiceClient } from "../../types/index.js";
 import {
   JOB_TTL_S,
   BLLMQ_JOB_NAME,
   ADMIN_ASSIGNMENT_SEED_JOB_NAME,
   BULLMQ_JOB_FAILURE_MESSAGE,
   ASSIGNMENT_SEED_JOB_MAX_ATTEMPTS,
-} from "../../utils";
-import { logger, envVars } from "../../config";
+} from "../../utils/index.js";
+import { logger, envVars } from "../../config/index.js";
 import { Types } from "mongoose";
 
 interface SqlJobPayload {

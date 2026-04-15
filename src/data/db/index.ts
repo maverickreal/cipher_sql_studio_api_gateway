@@ -1,3 +1,3 @@
-export * from "./models/assignment";
-export * from "./models/assignment_solution";
-export { default as DBClient } from "./client";
+export * from "./models/assignment/index.js";
+export * from "./models/assignment_solution/index.js";
+export { default as DBClient } from "./client/index.js";

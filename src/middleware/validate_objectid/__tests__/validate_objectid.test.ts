@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Request, Response, NextFunction } from "express";
-import validateObjectId from "../index";
+import validateObjectId from "../index.js";
 
 describe("validateObjectId middleware", () => {
   let req: Partial<Request>;

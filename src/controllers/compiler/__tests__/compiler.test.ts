@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import run_client_sql_code from '../index';
+import run_client_sql_code from '../index.js';
 import { Request, Response } from 'express';
-import * as services from '../../../services';
+import * as services from '../../../services/index.js';
 
-vi.mock('../../../services', () => ({
+vi.mock('../../../services/index.js', () => ({
   getAssignmentByIdCached: vi.fn(),
   getAssignmentSolutionByAssignmentIdCached: vi.fn(),
   TaskQueueClient: {

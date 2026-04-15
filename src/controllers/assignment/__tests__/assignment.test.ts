@@ -1,25 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { retrieve_all_assignments, retrieve_assignment } from '../index';
+import { retrieve_all_assignments, retrieve_assignment } from '../index.js';
 import { Request, Response } from 'express';
-import * as services from '../../../services';
+import * as services from '../../../services/index.js';
 
-vi.mock('../../../config', () => ({
+vi.mock('../../../config/index.js', () => ({
   envVars: { CLIENT_URL: 'http://localhost:3000' },
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
-vi.mock('../../../data', () => ({
+vi.mock('../../../data/index.js', () => ({
   Assignment: {
     find: vi.fn(),
     countDocuments: vi.fn(),
   },
 }));
 
-vi.mock('../../../services', () => ({
+vi.mock('../../../services/index.js', () => ({
   getAssignmentByIdCached: vi.fn(),
 }));
 
-import { Assignment } from '../../../data';
+import { Assignment } from '../../../data/index.js';
 
 describe('Assignment Controller', () => {
   let req: Partial<Request>;

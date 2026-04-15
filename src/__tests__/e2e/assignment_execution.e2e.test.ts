@@ -6,9 +6,9 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import mongoose from "mongoose";
 import { createClient, RedisClientType } from "redis";
-import { Assignment } from "../../data/db/models/assignment";
-import { AssignmentSolution } from "../../data/db/models/assignment_solution";
-import { REDIS_RATE_LIMIT_KEY_PREFIX } from "../../utils";
+import { Assignment } from "../../data/db/models/assignment/index.js";
+import { AssignmentSolution } from "../../data/db/models/assignment_solution/index.js";
+import { REDIS_RATE_LIMIT_KEY_PREFIX } from "../../utils/index.js";
 import dotenv from "dotenv";
 import path from "path";
 

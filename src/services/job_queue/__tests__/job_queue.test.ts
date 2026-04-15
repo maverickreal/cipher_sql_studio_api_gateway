@@ -20,12 +20,12 @@ vi.mock("bullmq", () => {
   };
 });
 
-vi.mock("../../../config", () => ({
+vi.mock("../../../config/index.js", () => ({
   envVars: { REDIS_URL: "redis://localhost:6379", BULLMQ_SQL_QUEUE_NAME: "test-queue" },
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
-import TaskQueueClient from "../index";
+import TaskQueueClient from "../index.js";
 
 describe("TaskQueueClient", () => {
   beforeEach(async () => {

@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Request, Response } from "express";
 
-vi.mock("../../config", () => ({
+vi.mock("../../config/index.js", () => ({
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
   envVars: {},
 }));
 
-import errorHandler from "../error_handler";
-import { logger } from "../../config";
+import errorHandler from "../error_handler/index.js";
+import { logger } from "../../config/index.js";
 
 describe("errorHandler middleware", () => {
   let req: Partial<Request>;

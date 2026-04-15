@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   getAssignmentByIdCached,
   getAssignmentSolutionByAssignmentIdCached,
-} from "../index";
+} from "../index.js";
 
 const mockGet = vi.fn();
 const mockSetEx = vi.fn();
 const mockExpire = vi.fn();
 
-vi.mock("../../../data", () => ({
+vi.mock("../../../data/index.js", () => ({
   CacheClient: {
     get: vi.fn(() => ({
       get: mockGet,
@@ -25,12 +25,12 @@ vi.mock("../../../data", () => ({
   },
 }));
 
-import { Assignment, AssignmentSolution } from "../../../data";
+import { Assignment, AssignmentSolution } from "../../../data/index.js";
 import {
   ASSIGNMENT_CACHE_TTL_S,
   ASSIGNMENT_KEY_PREFIX,
   ASSIGNMENT_SOLUTION_KEY_PREFIX,
-} from "../../../utils/constants";
+} from "../../../utils/constants/index.js";
 
 describe("getAssignmentByIdCached", () => {
   beforeEach(() => {

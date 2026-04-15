@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
-import { getAssignmentByIdCached } from "../../services";
-import { Assignment } from "../../data";
+import { getAssignmentByIdCached } from "../../services/index.js";
+import { Assignment } from "../../data/index.js";
 import { Request, Response } from "express";
 import {
   ASSIGNMENT_PAGINATION_DEFAULT_PAGE,
   ASSIGNMENT_PAGINATION_MAX_LIMIT,
   ASSIGNMENT_PAGINATION_DEFAULT_LIMIT,
-} from "../../utils";
+} from "../../utils/index.js";
 
 const retrieve_all_assignments = async (req: Request, res: Response) => {
   const page = Math.max(

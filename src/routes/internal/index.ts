@@ -2,8 +2,8 @@ import Router from "express";
 import {
   cleanup_assignment,
   confirm_assignment,
-} from "../../controllers/internal/";
-import { reqHeadIntApiKeyValidMware, validateObjectId } from "../../middleware";
+} from "../../controllers/internal/index.js";
+import { reqHeadIntApiKeyValidMware, validateObjectId } from "../../middleware/index.js";
 
 const router = Router();
 

@@ -1,10 +1,10 @@
 import helmet from "helmet";
-import { envVars } from "./config";
-import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils";
+import { envVars } from "./config/index.js";
+import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils/index.js";
 import express from "express";
 import cors from "cors";
-import { apiV1Router, internalRouter } from "./routes";
-import { errorHandler, apiLogger, GlobalRateLimitMware } from "./middleware/";
+import { apiV1Router, internalRouter } from "./routes/index.js";
+import { errorHandler, apiLogger, GlobalRateLimitMware } from "./middleware/index.js";
 
 const app = express();
 

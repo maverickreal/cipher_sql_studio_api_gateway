@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
-import { Assignment } from "../../data/db/models/assignment";
-import { AssignmentSolution } from "../../data/db/models/assignment_solution";
-import { CacheClient } from "../../data";
-import { ASSIGNMENT_KEY_PREFIX } from "../../utils";
-import { logger } from "../../config";
+import { Assignment } from "../../data/db/models/assignment/index.js";
+import { AssignmentSolution } from "../../data/db/models/assignment_solution/index.js";
+import { CacheClient } from "../../data/index.js";
+import { ASSIGNMENT_KEY_PREFIX } from "../../utils/index.js";
+import { logger } from "../../config/index.js";
 
 const cleanup_assignment = async (req: Request, res: Response) => {
   const id = req.params.id as string;
