@@ -3,6 +3,8 @@ import { envVars } from "./config/index.js";
 import { CORS_ALLOWED_METHODS, EXPRESS_REQ_BODY_LIMIT } from "./utils/index.js";
 import express from "express";
 import cors from "cors";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./auth/index.js";
 import { apiV1Router, internalRouter } from "./routes/index.js";
 import { errorHandler, apiLogger, GlobalRateLimitMware } from "./middleware/index.js";
 
@@ -23,6 +25,8 @@ app.use(
 );
 
 app.use(GlobalRateLimitMware);
+
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json({ limit: EXPRESS_REQ_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: EXPRESS_REQ_BODY_LIMIT }));
