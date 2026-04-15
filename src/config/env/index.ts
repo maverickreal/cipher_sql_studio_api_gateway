@@ -13,6 +13,9 @@ const envVarsSchema = z.object({
   ENV_MODE: z.enum(ENV_MODE).nonoptional(),
   LOG_DIR: z.string().default("./logs"),
   INTERNAL_API_KEY: z.string().nonempty().nonoptional(),
+  BETTER_AUTH_SECRET: z.string().min(32).nonoptional(),
+  BETTER_AUTH_URL: z.url().nonempty().nonoptional(),
+  ADMIN_SECRET_CODE: z.string().nonempty().nonoptional(),
 });
 
 const parsedEnvVarsBody = envVarsSchema.safeParse(process.env);
