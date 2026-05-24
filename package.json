@@ -1,6 +1,6 @@
 {
   "name": "cipher_sql_studio",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "The backend for an online SQL compiler website.",
   "main": "index.js",
   "scripts": {
