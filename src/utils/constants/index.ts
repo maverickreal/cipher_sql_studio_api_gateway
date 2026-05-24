@@ -1,7 +1,7 @@
 export const SERVER_START_FAILURE_EXIT_CODE = 1;
 export const COMPRESSION_MIDDLEWARE_LEVEL = 6;
 export const COMPRESSION_MIDDLEWARE_THRESHOLD = 1024;
-export const CORS_ALLOWED_METHODS = ["GET", "POST", "PUT", "DELETE"];
+export const CORS_ALLOWED_METHODS = ["GET", "POST", "PATCH", "DELETE"];
 export const EXPRESS_REQ_BODY_LIMIT = "1mb";
 export const ASSIGNMENT_CACHE_TTL_S = 600;
 
@@ -18,13 +18,6 @@ export enum ASSIGNMENT_ACCESS_LEVEL {
 
 export const MAX_USER_SQL_CODE_LEN = 5000;
 export const JOB_TTL_S = 600;
-
-export const KILL_SIGNALS_TO_INTERCEPT = [
-  "SIGTERM",
-  "SIGINT",
-  "UNHANDLED_REJECTION",
-  "UNCAUGHT_EXCEPTION",
-];
 
 export const SERVER_KILL_SIGNAL_EXIT_CODE = 2;
 
@@ -45,7 +38,7 @@ export const ASSIGNMENT_KEY_PREFIX = "client_sql_code_assignment:";
 export const ASSIGNMENT_LIST_KEY = "client_sql_code_assignment:all";
 export const ASSIGNMENT_SOLUTION_KEY_PREFIX =
   "client_sql_code_assignment_solution:";
-export const BLLMQ_JOB_NAME = "client_sql_studio_sql_exec";
+export const BULLMQ_JOB_NAME = "client_sql_studio_sql_exec";
 export const ADMIN_ASSIGNMENT_SEED_JOB_NAME =
   "client_sql_studio_admin_assignment_seed";
 export const BULLMQ_JOB_FAILURE_MESSAGE = "BullMQ task failed!";

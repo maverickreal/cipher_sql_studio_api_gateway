@@ -7,6 +7,14 @@ vi.mock("../../../config", () => ({
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
+vi.mock("../../../data/db/client", () => ({
+  sharedMongoClient: {},
+  default: {
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+  },
+}));
+
 vi.mock("../../../data/db/models/assignment", () => ({
   Assignment: {
     create: vi.fn(),
@@ -78,20 +86,27 @@ describe("create_assignment controller", () => {
   it("should return 201 on valid payload", async () => {
     const fakeId = "abc123";
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-1");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-1",
+    );
 
     req = { body: validPayload };
 
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
-    expect(jsonMock).toHaveBeenCalledWith({ assignmentId: fakeId, jobId: "job-1" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      assignmentId: fakeId,
+      jobId: "job-1",
+    });
   });
 
   it("should return 201 with optional fields (solutionSql, validationSql)", async () => {
     const fakeId = "abc456";
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-2");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-2",
+    );
 
     req = {
       body: {
@@ -104,26 +119,36 @@ describe("create_assignment controller", () => {
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
-    expect(jsonMock).toHaveBeenCalledWith({ assignmentId: fakeId, jobId: "job-2" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      assignmentId: fakeId,
+      jobId: "job-2",
+    });
   });
 
   it("should return 201 without optional solutionSql/validationSql", async () => {
     const fakeId = "abc789";
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-3");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-3",
+    );
 
     req = { body: validPayload };
 
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
-    expect(jsonMock).toHaveBeenCalledWith({ assignmentId: fakeId, jobId: "job-3" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      assignmentId: fakeId,
+      jobId: "job-3",
+    });
   });
 
   it("should pass only assignment fields to Assignment.create", async () => {
     const fakeId = "abc123";
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-1");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-1",
+    );
 
     req = {
       body: {
@@ -148,7 +173,9 @@ describe("create_assignment controller", () => {
   it("should pass assignmentId and initSql to enqueueAdminAssignmentSeedJob", async () => {
     const fakeId = "abc123";
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-1");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-1",
+    );
 
     req = { body: validPayload };
 
@@ -275,12 +302,16 @@ describe("create_assignment controller", () => {
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(500);
-    expect(jsonMock).toHaveBeenCalledWith({ error: "Failed to create the assignment!" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      error: "Failed to create the assignment!",
+    });
   });
 
   it("should return 500 when AssignmentSolution.create rejects", async () => {
     vi.mocked(Assignment.create).mockResolvedValue({ _id: "abc" } as any);
-    vi.mocked(AssignmentSolution.create).mockRejectedValue(new Error("Solution DB error"));
+    vi.mocked(AssignmentSolution.create).mockRejectedValue(
+      new Error("Solution DB error"),
+    );
     vi.mocked(Assignment.findByIdAndDelete).mockResolvedValue({} as any);
     vi.mocked(AssignmentSolution.deleteOne).mockResolvedValue({} as any);
 
@@ -289,7 +320,9 @@ describe("create_assignment controller", () => {
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(500);
-    expect(jsonMock).toHaveBeenCalledWith({ error: "Failed to create the assignment!" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      error: "Failed to create the assignment!",
+    });
   });
 
   it("should return 500 when enqueue rejects", async () => {
@@ -306,7 +339,9 @@ describe("create_assignment controller", () => {
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(500);
-    expect(jsonMock).toHaveBeenCalledWith({ error: "Failed to enqueue seed job!" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      error: "Failed to enqueue seed job!",
+    });
   });
 
   it("should return 400 when title is empty string", async () => {
@@ -326,9 +361,13 @@ describe("create_assignment controller", () => {
   });
 
   it("should return 400 when sampleInput contains whitespace-only strings", async () => {
-    vi.mocked(Assignment.create).mockResolvedValue({ _id: "whitespace123" } as any);
+    vi.mocked(Assignment.create).mockResolvedValue({
+      _id: "whitespace123",
+    } as any);
     vi.mocked(AssignmentSolution.create).mockResolvedValue({} as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-whitespace");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-whitespace",
+    );
 
     req = { body: { ...validPayload, sampleInput: ["   ", "\t", "\n"] } };
 
@@ -365,7 +404,9 @@ describe("create_assignment controller", () => {
     const fakeId = "maxlen123";
     const longString = "a".repeat(10000);
     vi.mocked(Assignment.create).mockResolvedValue({ _id: fakeId } as any);
-    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue("job-max");
+    vi.mocked(TaskQueueClient.enqueueAdminAssignmentSeedJob).mockResolvedValue(
+      "job-max",
+    );
 
     req = {
       body: {
@@ -381,7 +422,10 @@ describe("create_assignment controller", () => {
     await create_assignment(req as Request, res as Response);
 
     expect(statusMock).toHaveBeenCalledWith(201);
-    expect(jsonMock).toHaveBeenCalledWith({ assignmentId: fakeId, jobId: "job-max" });
+    expect(jsonMock).toHaveBeenCalledWith({
+      assignmentId: fakeId,
+      jobId: "job-max",
+    });
   });
 
   it("should throw when Assignment.findByIdAndDelete fails during rollback", async () => {
@@ -397,9 +441,9 @@ describe("create_assignment controller", () => {
 
     req = { body: validPayload };
 
-    await expect(create_assignment(req as Request, res as Response)).rejects.toThrow(
-      "Delete failed",
-    );
+    await expect(
+      create_assignment(req as Request, res as Response),
+    ).rejects.toThrow("Delete failed");
   });
 
   it("should throw when AssignmentSolution.deleteOne fails during rollback", async () => {
@@ -415,8 +459,8 @@ describe("create_assignment controller", () => {
 
     req = { body: validPayload };
 
-    await expect(create_assignment(req as Request, res as Response)).rejects.toThrow(
-      "Solution delete failed",
-    );
+    await expect(
+      create_assignment(req as Request, res as Response),
+    ).rejects.toThrow("Solution delete failed");
   });
 });

@@ -7,6 +7,32 @@ vi.mock("../../config", () => ({
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
+vi.mock("../../auth", () => ({
+  auth: {
+    api: {
+      getSession: vi.fn().mockResolvedValue({
+        user: {
+          id: "test-user-id",
+          email: "admin@test.com",
+          name: "Test Admin",
+          emailVerified: true,
+          role: "admin",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        session: {
+          id: "test-session-id",
+          userId: "test-user-id",
+          expiresAt: new Date(Date.now() + 86400_000),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      }),
+    },
+  },
+  disconnectAuth: vi.fn(),
+}));
+
 vi.mock("../../middleware/api/api_logger", () => ({
   default: (_req: any, _res: any, next: any) => next(),
 }));
@@ -16,9 +42,14 @@ vi.mock("../../middleware/rate_limiter", () => ({
   ExecuteRateLimitMware: (_req: any, _res: any, next: any) => next(),
 }));
 
-const { MockAssignment, MockAssignmentSolution, AssignmentValidatorSchema, AssignmentSolutionValidatorSchema } = vi.hoisted(() => {
+const {
+  MockAssignment,
+  MockAssignmentSolution,
+  AssignmentValidatorSchema,
+  AssignmentSolutionValidatorSchema,
+} = vi.hoisted(() => {
   const { z } = require("zod/v4");
-  
+
   const assignment = {
     create: vi.fn(),
     findByIdAndUpdate: vi.fn().mockResolvedValue({}),
@@ -68,7 +99,10 @@ const { MockAssignment, MockAssignmentSolution, AssignmentValidatorSchema, Assig
 
 vi.mock("../../data", () => ({
   CacheClient: {
-    get: vi.fn().mockResolvedValue({ sendCommand: vi.fn() }),
+    get: vi.fn().mockResolvedValue({
+      sendCommand: vi.fn(),
+      ping: vi.fn().mockResolvedValue("PONG"),
+    }),
     connect: vi.fn(),
     disconnect: vi.fn(),
   },
@@ -89,8 +123,6 @@ vi.mock("../../data/db/models/assignment_solution", () => ({
   AssignmentSolution: MockAssignmentSolution,
   AssignmentSolutionValidatorSchema,
 }));
-
-
 
 const { mockTaskQueueClient, mockJob } = vi.hoisted(() => {
   const job = {
@@ -150,7 +182,11 @@ describe("Assignments API Integration", () => {
 
   describe("GET /api/v1/assignments/:id", () => {
     it("should return 200 and the assignment", async () => {
-      const mockAssignment = { _id: validId, title: "Test", pgSchemaReady: true };
+      const mockAssignment = {
+        _id: validId,
+        title: "Test",
+        pgSchemaReady: true,
+      };
       (services.getAssignmentByIdCached as any).mockResolvedValue(
         mockAssignment,
       );
@@ -170,7 +206,11 @@ describe("Assignments API Integration", () => {
     });
 
     it("should return 503 if schema is not ready", async () => {
-      const mockAssignment = { _id: validId, title: "Test", pgSchemaReady: false };
+      const mockAssignment = {
+        _id: validId,
+        title: "Test",
+        pgSchemaReady: false,
+      };
       (services.getAssignmentByIdCached as any).mockResolvedValue(
         mockAssignment,
       );
@@ -289,9 +329,7 @@ describe("Assignments API Integration", () => {
     });
 
     it("should return 400 for empty body", async () => {
-      const res = await request(app)
-        .post("/api/v1/admin/assignments")
-        .send({});
+      const res = await request(app).post("/api/v1/admin/assignments").send({});
 
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty("error");
@@ -301,9 +339,7 @@ describe("Assignments API Integration", () => {
   describe("GET /api/v1/assignments/client-sql-code-run/status/:taskId", () => {
     it("should return 200 with job status when found", async () => {
       const mockStatus = { status: "completed", result: { success: true } };
-      (services.TaskQueueClient.getStatus as any).mockResolvedValue(
-        mockStatus,
-      );
+      (services.TaskQueueClient.getStatus as any).mockResolvedValue(mockStatus);
 
       const res = await request(app).get(
         "/api/v1/assignments/client-sql-code-run/status/123",

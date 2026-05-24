@@ -13,6 +13,14 @@ const envVarsSchema = z.object({
   ENV_MODE: z.enum(ENV_MODE).nonoptional(),
   LOG_DIR: z.string().default("./logs"),
   INTERNAL_API_KEY: z.string().nonempty().nonoptional(),
+  BETTER_AUTH_SECRET: z.string().nonempty().nonoptional(),
+  BETTER_AUTH_URL: z.url().nonempty().nonoptional(),
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GITHUB_CLIENT_ID: z.string().optional(),
+  GITHUB_CLIENT_SECRET: z.string().optional(),
+  DEFAULT_ADMIN_EMAIL: z.email().nonoptional(),
+  DEFAULT_ADMIN_PASSWORD: z.string().nonempty().nonoptional(),
 });
 
 const parsedEnvVarsBody = envVarsSchema.safeParse(process.env);

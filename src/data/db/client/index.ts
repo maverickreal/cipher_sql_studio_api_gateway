@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 import { type ServiceClient } from "../../../types";
 import { envVars, logger } from "../../../config";
 
+export const sharedMongoClient = new MongoClient(envVars.MONGO_URI);
+
 class DBClient {
-  private static clientInst: mongoose.Mongoose | null = null;
+  private static connected = false;
 
   static async connect() {
-    if (DBClient.clientInst !== null) {
+    if (DBClient.connected) {
       return;
     }
-    const uri = envVars.MONGO_URI;
 
     mongoose.connection.on("connected", () => {
       logger.info("Established MongoDB connection.");
@@ -22,13 +24,17 @@ class DBClient {
     mongoose.connection.on("disconnected", () => {
       logger.info("Terminated MongoDB connection.");
     });
-    DBClient.clientInst = await mongoose.connect(uri);
+
+    await sharedMongoClient.connect();
+    mongoose.connection.setClient(sharedMongoClient);
+    DBClient.connected = true;
   }
 
-  static async disconnect(): Promise<void> {
-    if (DBClient.clientInst) {
+  static async disconnect() {
+    if (DBClient.connected) {
       await mongoose.disconnect();
-      DBClient.clientInst = null;
+      await sharedMongoClient.close();
+      DBClient.connected = false;
     }
   }
 }

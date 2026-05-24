@@ -59,7 +59,7 @@ const confirm_assignment = async (req: Request, res: Response) => {
     res.status(200).json({ success: true, assignmentId });
   } catch (err) {
     logger.error(
-      { assignmentId },
+      { err, assignmentId },
       `Failed at updating the pgSchemaReady field for assignment ${assignmentId}!`,
     );
     res.status(500).json({ error: "Assignment confirmation failed!" });

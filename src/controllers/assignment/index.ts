@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import { getAssignmentByIdCached } from "../../services";
 import { Assignment } from "../../data";
 import { Request, Response } from "express";
@@ -35,11 +34,6 @@ const retrieve_all_assignments = async (req: Request, res: Response) => {
 
 const retrieve_assignment = async (req: Request, res: Response) => {
   const reqId = req.params.id as string;
-
-  if (!Types.ObjectId.isValid(reqId)) {
-    res.status(400).json({ error: "Invalid assignment ID provided!" });
-    return;
-  }
 
   const assignment = await getAssignmentByIdCached(reqId);
 

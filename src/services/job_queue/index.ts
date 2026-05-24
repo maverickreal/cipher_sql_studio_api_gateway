@@ -2,7 +2,7 @@ import { Queue } from "bullmq";
 import { type ServiceClient } from "../../types";
 import {
   JOB_TTL_S,
-  BLLMQ_JOB_NAME,
+  BULLMQ_JOB_NAME,
   ADMIN_ASSIGNMENT_SEED_JOB_NAME,
   BULLMQ_JOB_FAILURE_MESSAGE,
   ASSIGNMENT_SEED_JOB_MAX_ATTEMPTS,
@@ -49,10 +49,14 @@ class TaskQueueClient {
   }
 
   static async enqueue(data: SqlJobPayload) {
-    const { id } = await TaskQueueClient.clientInst!.add(BLLMQ_JOB_NAME, data, {
-      removeOnComplete: { age: JOB_TTL_S },
-      removeOnFail: { age: JOB_TTL_S },
-    });
+    const { id } = await TaskQueueClient.clientInst!.add(
+      BULLMQ_JOB_NAME,
+      data,
+      {
+        removeOnComplete: { age: JOB_TTL_S },
+        removeOnFail: { age: JOB_TTL_S },
+      },
+    );
 
     return id;
   }

@@ -4,18 +4,18 @@ import {
   get_job_status,
 } from "../../../../../controllers";
 import {
-  compressionMware,
   ExecuteRateLimitMware,
+  requireAuthMware,
 } from "../../../../../middleware/";
 
 const router = Router();
 
 router.post(
   "/execute",
+  requireAuthMware,
   ExecuteRateLimitMware,
-  compressionMware,
   run_client_sql_code,
 );
-router.get("/status/:taskId", get_job_status);
+router.get("/status/:taskId", requireAuthMware, get_job_status);
 
 export default router;

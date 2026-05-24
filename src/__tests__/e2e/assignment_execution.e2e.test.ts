@@ -24,7 +24,7 @@ dotenv.config({
 const API_GATEWAY_URL = `http://127.0.0.1:8000`;
 const E2E_TEST_ASSIGNMENT_LIMIT = 10;
 const MAX_POLL_RETRIES = 10;
-const POLL_INTERVAL_DURATION = 5;
+const POLL_INTERVAL_DURATION = 500;
 const PER_TEST_TIME_OUT = 30_000;
 
 /*
