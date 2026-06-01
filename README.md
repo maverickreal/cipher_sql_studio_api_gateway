@@ -7,7 +7,7 @@ REST API backend for the online SQL learning platform. Handles assignment manage
 To test/run the entire backend locally, all you need do is:
 
 1. Clone all the project repos:
-   - https://github.com/maverickreal/cipher_sql_studio
+   - https://github.com/maverickreal/m_sql
    - https://github.com/maverickreal/cipher_sql_studio_sandbox
    - https://github.com/maverickreal/cipher_sql_studio_api_gateway
 2. Run the following shell code, from within the orchestrator repo (cipher_sql_studio):
