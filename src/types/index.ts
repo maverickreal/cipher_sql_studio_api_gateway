@@ -28,8 +28,8 @@ export interface AuthSessionData {
 declare global {
   namespace Express {
     interface Request {
-      authUser: AuthUser | null;
-      authSession: AuthSessionData | null;
+      user: AuthUser | null;
+      session: AuthSessionData | null;
     }
   }
 }

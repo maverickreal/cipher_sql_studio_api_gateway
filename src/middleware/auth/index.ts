@@ -2,41 +2,27 @@ import { Request, Response, NextFunction } from "express";
 import { auth } from "../../auth";
 import { fromNodeHeaders } from "better-auth/node";
 
-export const sessionMware = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  try {
-    const headers = fromNodeHeaders(req.headers);
-    const result = await auth.api.getSession({ headers });
-
-    req.authUser = null;
-    req.authSession = null;
-
-    if (result?.user && result?.session) {
-      req.authUser = result.user;
-      req.authSession = result.session;
-    }
-  } catch {
-    req.authUser = null;
-    req.authSession = null;
-  }
-
-  next();
-};
-
-export const requireAuthMware = (
+export const requireAuthMware = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): void => {
-  if (!req.authUser) {
-    res.status(401).json({ error: "Authentication required" });
-    return;
-  }
+): Promise<void> => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
 
-  next();
+    if (!session) {
+      res.status(401).json({ error: "Authentication required" });
+      return;
+    }
+
+    req.user = session.user;
+    req.session = session.session;
+    next();
+  } catch {
+    res.status(401).json({ error: "Authentication required" });
+  }
 };
 
 export const requireAdminMware = (
@@ -44,7 +30,9 @@ export const requireAdminMware = (
   res: Response,
   next: NextFunction,
 ): void => {
-  if (req.authUser?.role !== "admin") {
+  const reqWithUser = req as Request & { user?: { role?: string } };
+
+  if (!reqWithUser.user || reqWithUser.user.role !== "admin") {
     res.status(403).json({ error: "Admin access required" });
     return;
   }

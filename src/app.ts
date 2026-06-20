@@ -8,7 +8,6 @@ import {
   errorHandler,
   apiLogger,
   GlobalRateLimitMware,
-  sessionMware,
   compressionMware,
 } from "./middleware/";
 import { auth } from "./auth";
@@ -54,7 +53,7 @@ app.use(express.urlencoded({ extended: true, limit: EXPRESS_REQ_BODY_LIMIT }));
 
 app.use(apiLogger);
 
-app.use("/api/v1", sessionMware, apiV1Router);
+app.use("/api/v1", apiV1Router);
 app.use("/internal", internalRouter);
 
 app.use(errorHandler);

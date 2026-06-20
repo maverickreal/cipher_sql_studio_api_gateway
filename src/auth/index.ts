@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { admin } from "better-auth/plugins";
+import { createAuthMiddleware } from "better-auth/api";
 import { envVars } from "../config";
 import { sharedMongoClient } from "../data/db/client";
 
@@ -31,7 +32,36 @@ export const auth = betterAuth({
     enabled: true,
   },
   socialProviders,
-  plugins: [admin()],
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        input: false,
+      },
+    },
+  },
+  plugins: [
+    admin({
+      defaultRole: "user",
+      adminRoles: ["admin"],
+    }),
+  ],
+  hooks: {
+    before: createAuthMiddleware(async (ctx): Promise<unknown> => {
+      if (ctx.path === "/sign-up/email") {
+        const adminSecret = (ctx.body as Record<string, unknown>)?.adminSecret;
+        if (adminSecret === envVars.ADMIN_SECRET_CODE) {
+          return {
+            context: {
+              ...ctx,
+              body: { ...(ctx.body as Record<string, unknown>), role: "admin" },
+            },
+          };
+        }
+      }
+      return null;
+    }),
+  },
 });
 
 export const seedAdminUser = async (
