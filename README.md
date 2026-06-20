@@ -1,4 +1,4 @@
-# CipherSqlStudio API Gateway
+# MSqlStudio API Gateway
 
 REST API backend for the online SQL learning platform. Handles assignment management, SQL execution job dispatch via BullMQ, and admin operations.
 
@@ -8,9 +8,9 @@ To test/run the entire backend locally, all you need do is:
 
 1. Clone all the project repos:
    - https://github.com/maverickreal/m_sql
-   - https://github.com/maverickreal/cipher_sql_studio_sandbox
-   - https://github.com/maverickreal/cipher_sql_studio_api_gateway
-2. Run the following shell code, from within the orchestrator repo (cipher_sql_studio):
+   - https://github.com/maverickreal/m_sql_studio_sandbox
+   - https://github.com/maverickreal/m_sql_studio_api_gateway
+2. Run the following shell code, from within the orchestrator repo (m_sql_studio):
    ```sh
    chmod u+x ./init.dev.bash;
    ./init.dev.bash;
@@ -36,7 +36,7 @@ To test/run the entire backend locally, all you need do is:
 ## Prerequisites
 
 - Node.js 22+
-- Running MongoDB, Redis, and PostgreSQL instances (or use the parent [cipher_sql_studio](../cipher_sql_studio) Docker Compose setup)
+- Running MongoDB, Redis, and PostgreSQL instances (or use the parent [m_sql_studio](../m_sql_studio) Docker Compose setup)
 
 ## Getting Started
 
@@ -72,8 +72,8 @@ npm run start
 ### Docker
 
 ```bash
-docker build -t cipher-sql-studio-api-gateway .
-docker run -p 8000:8000 --env-file .env cipher-sql-studio-api-gateway
+docker build -t m-sql-studio-api-gateway .
+docker run -p 8000:8000 --env-file .env m-sql-studio-api-gateway
 ```
 
 The production image uses a multi-stage build and only includes compiled JavaScript with production dependencies.
@@ -114,7 +114,7 @@ Authenticated via `x-internal-api-key` header.
 | `REDIS_URL`             | Redis connection URL                   | `redis://:password@localhost:6379`                     |
 | `ENV_MODE`              | Environment mode                       | `DEV`, `STAGING`, `PROD`                               |
 | `LOG_LEVEL`             | Pino log level                         | `info`                                                 |
-| `LOG_DIR`               | Directory for log file output          | `/var/log/cipher_sql_studio`                           |
+| `LOG_DIR`               | Directory for log file output          | `/var/log/m_sql_studio`                           |
 | `BULLMQ_SQL_QUEUE_NAME` | BullMQ queue name (must match sandbox) | `sql_exec_queue`                                       |
 | `INTERNAL_API_KEY`      | Shared key for internal service auth   | --                                                     |
 

@@ -31,7 +31,7 @@ export const GLOBAL_RATE_LIMIT_WINDOW_SIZE = 60_000;
 export const GLOBAL_RATE_LIMIT_PER_WINDOW = 100;
 export const EXECUTE_RATE_LIMIT_WINDOW_SIZE = 60_000;
 export const EXECUTE_RATE_LIMIT_PER_WINDOW = 10;
-export const REDIS_RATE_LIMIT_KEY_PREFIX = "cipher_sql_studio_rate_limit:";
+export const REDIS_RATE_LIMIT_KEY_PREFIX = "m_sql_studio_rate_limit:";
 export const RATE_LIMIT_ERROR = "API endpoint rate limit reached!";
 
 export const ASSIGNMENT_KEY_PREFIX = "client_sql_code_assignment:";

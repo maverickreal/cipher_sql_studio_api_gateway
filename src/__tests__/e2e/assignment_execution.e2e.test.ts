@@ -15,7 +15,7 @@ import path from "path";
 dotenv.config({
   path: [
     path.join(import.meta.dirname, ".env"),
-    path.join(import.meta.dirname, "../../../../cipher_sql_studio/.env"),
+    path.join(import.meta.dirname, "../../../../m_sql_studio/.env"),
   ],
   override: true,
 });

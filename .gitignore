@@ -1,6 +1,5 @@
 node_modules
 .env
-cipher_sql_studio.code-workspace
 dist
 nodemon.json
 **/.DS_Store

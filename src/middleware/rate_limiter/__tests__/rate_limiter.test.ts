@@ -31,7 +31,7 @@ vi.mock("../../../data", () => ({
 vi.mock("../../../utils", () => ({
   GLOBAL_RATE_LIMIT_WINDOW_SIZE: 60_000,
   GLOBAL_RATE_LIMIT_PER_WINDOW: 100,
-  REDIS_RATE_LIMIT_KEY_PREFIX: "cipher_sql_studio_rate_limit:",
+  REDIS_RATE_LIMIT_KEY_PREFIX: "m_sql_studio_rate_limit:",
   EXECUTE_RATE_LIMIT_WINDOW_SIZE: 60_000,
   EXECUTE_RATE_LIMIT_PER_WINDOW: 10,
   RATE_LIMIT_ERROR: "API endpoint rate limit reached!",
