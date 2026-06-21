@@ -78,6 +78,14 @@ class TaskQueueClient {
     return id;
   }
 
+  static async ping(): Promise<void> {
+    await TaskQueueClient.clientInst!.getJobCounts();
+  }
+
+  static async getWorkersCount(): Promise<number> {
+    return TaskQueueClient.clientInst!.getWorkersCount();
+  }
+
   static async getStatus(taskId: string) {
     const task = await TaskQueueClient.clientInst!.getJob(taskId);
 

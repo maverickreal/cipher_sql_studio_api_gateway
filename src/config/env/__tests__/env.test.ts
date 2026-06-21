@@ -10,7 +10,7 @@ const ENV_MODE = {
 const envVarsSchema = z.object({
   CLIENT_URL: z.url().nonempty().nonoptional(),
   SERVER_PORT: z.coerce.number().int().nonoptional(),
-  MONGO_URI: z.url().nonempty().nonoptional(),
+  MONGO_URI: z.string().nonempty().nonoptional(),
   REDIS_URL: z.url().nonempty().nonoptional(),
   BULLMQ_SQL_QUEUE_NAME: z.string().nonempty().nonoptional(),
   LOG_LEVEL: z
@@ -71,7 +71,9 @@ describe("env validation", () => {
       const result = envVarsSchema.safeParse(env);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some(i => i.path.includes("CLIENT_URL"))).toBe(true);
+        expect(
+          result.error.issues.some((i) => i.path.includes("CLIENT_URL")),
+        ).toBe(true);
       }
     });
 
@@ -138,7 +140,10 @@ describe("env validation", () => {
     });
 
     it("should pass with valid mongodb:// URL", () => {
-      const env = { ...validEnv, MONGO_URI: "mongodb://user:pass@host:27017/db" };
+      const env = {
+        ...validEnv,
+        MONGO_URI: "mongodb://user:pass@host:27017/db",
+      };
       const result = envVarsSchema.safeParse(env);
       expect(result.success).toBe(true);
     });
@@ -164,7 +169,14 @@ describe("env validation", () => {
     });
 
     it("should pass with all valid LOG_LEVEL values", () => {
-      const levels = ["trace", "debug", "info", "warn", "error", "fatal"] as const;
+      const levels = [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "fatal",
+      ] as const;
       for (const level of levels) {
         const env = { ...validEnv, LOG_LEVEL: level };
         const result = envVarsSchema.safeParse(env);

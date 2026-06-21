@@ -4,9 +4,14 @@ import { ENV_MODE, SERVER_START_FAILURE_EXIT_CODE } from "../../utils";
 const envVarsSchema = z.object({
   CLIENT_URL: z.url().nonempty().nonoptional(),
   SERVER_PORT: z.coerce.number().int().nonoptional(),
-  MONGO_URI: z.url().nonempty().nonoptional(),
+  MONGO_URI: z.string().startsWith("mongodb").nonempty().nonoptional(),
   REDIS_URL: z.url().nonempty().nonoptional(),
   BULLMQ_SQL_QUEUE_NAME: z.string().nonempty().nonoptional(),
+  SANDBOX_PG_HOST: z.string().nonempty().nonoptional(),
+  SANDBOX_PG_PORT: z.coerce.number().int().nonoptional(),
+  SANDBOX_PG_DATABASE: z.string().nonempty().nonoptional(),
+  SANDBOX_PG_USER: z.string().nonempty().nonoptional(),
+  SANDBOX_PG_PASSWORD: z.string().nonempty().nonoptional(),
   LOG_LEVEL: z
     .enum(["trace", "debug", "info", "warn", "error", "fatal"])
     .nonoptional(),

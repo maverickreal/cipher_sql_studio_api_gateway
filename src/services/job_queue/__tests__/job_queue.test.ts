@@ -3,6 +3,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const mockAdd = vi.fn();
 const mockGetJob = vi.fn();
 const mockClose = vi.fn();
+const mockGetJobCounts = vi.fn();
+const mockGetWorkersCount = vi.fn();
 const mockQueueEventsClose = vi.fn();
 
 vi.mock("bullmq", () => {
@@ -11,7 +13,8 @@ vi.mock("bullmq", () => {
       add = mockAdd;
       getJob = mockGetJob;
       close = mockClose;
-      constructor() {}
+      getJobCounts = mockGetJobCounts;
+      getWorkersCount = mockGetWorkersCount;
     },
     QueueEvents: class MockQueueEvents {
       close = mockQueueEventsClose;
@@ -21,7 +24,10 @@ vi.mock("bullmq", () => {
 });
 
 vi.mock("../../../config", () => ({
-  envVars: { REDIS_URL: "redis://localhost:6379", BULLMQ_SQL_QUEUE_NAME: "test-queue" },
+  envVars: {
+    REDIS_URL: "redis://localhost:6379",
+    BULLMQ_SQL_QUEUE_NAME: "test-queue",
+  },
   logger: { error: vi.fn(), info: vi.fn(), warn: vi.fn(), debug: vi.fn() },
 }));
 
@@ -125,6 +131,24 @@ describe("TaskQueueClient", () => {
     const result = await TaskQueueClient.getStatus("job-1");
 
     expect(result).toEqual({ status: "failed", result: "BullMQ task failed!" });
+  });
+
+  it("should ping queue via getJobCounts", async () => {
+    TaskQueueClient.connect();
+    mockGetJobCounts.mockResolvedValue({ waiting: 0 });
+
+    await TaskQueueClient.ping();
+
+    expect(mockGetJobCounts).toHaveBeenCalled();
+  });
+
+  it("should return worker count from queue", async () => {
+    TaskQueueClient.connect();
+    mockGetWorkersCount.mockResolvedValue(2);
+
+    const count = await TaskQueueClient.getWorkersCount();
+
+    expect(count).toBe(2);
   });
 
   it("should close queue on disconnect", async () => {
